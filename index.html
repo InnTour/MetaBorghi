@@ -30,6 +30,25 @@
     />
 
     <title>MetaBorghi — Nuovo Futuro per le Aree Interne Italiane</title>
+    <style>
+      #inntour-scroll-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        width: 0%;
+        background: linear-gradient(90deg, #00D084 0%, #00B4D8 50%, #F0FF00 100%);
+        z-index: 9999;
+        pointer-events: none;
+        transition: width 0.08s linear;
+      }
+      @keyframes inntour-float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        25% { transform: translateY(-10px) rotate(1deg); }
+        50% { transform: translateY(-6px) rotate(0deg); }
+        75% { transform: translateY(-12px) rotate(-1deg); }
+      }
+    </style>
     <script type="module" crossorigin src="/assets/index-Bhg8UQGm.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/vendor-react-CY4oDSF8.js">
     <link rel="modulepreload" crossorigin href="/assets/vendor-motion-DQMF-AB3.js">
@@ -37,6 +56,16 @@
     <link rel="stylesheet" crossorigin href="/assets/index-D9GWNotR.css">
   </head>
   <body class="bg-cream-50 text-stone-800 font-body antialiased">
+    <div id="inntour-scroll-bar"></div>
     <div id="root"></div>
+    <script>
+      window.addEventListener('scroll', function() {
+        var scrollTop = window.scrollY || document.documentElement.scrollTop;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        var bar = document.getElementById('inntour-scroll-bar');
+        if (bar) bar.style.width = progress + '%';
+      }, { passive: true });
+    </script>
   </body>
 </html>
