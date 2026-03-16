@@ -5,21 +5,13 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="MetaBorghi — Piattaforma e-commerce esperienziale per i borghi italiani dell'Alta Irpinia. Prodotti tipici, esperienze territoriali e artigianato locale." />
-    <meta name="theme-color" content="#8B4513" />
+    <meta name="theme-color" content="#00D084" />
 
     <!-- Open Graph -->
     <meta property="og:title" content="MetaBorghi — Nuovo Futuro per le Aree Interne Italiane" />
     <meta property="og:description" content="Scopri le eccellenze enogastronomiche, le esperienze territoriali e l'artigianato dei borghi dell'Alta Irpinia." />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="it_IT" />
-
-    <!-- Fonts: Playfair Display (titoli), Inter (body), Cormorant Garamond (accent) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap"
-      rel="stylesheet"
-    />
 
     <!-- Leaflet CSS -->
     <link
@@ -30,30 +22,330 @@
     />
 
     <title>MetaBorghi — Nuovo Futuro per le Aree Interne Italiane</title>
-    <style>
-      #inntour-scroll-bar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 4px;
-        width: 0%;
-        background: linear-gradient(90deg, #00D084 0%, #00B4D8 50%, #F0FF00 100%);
-        z-index: 9999;
-        pointer-events: none;
-        transition: width 0.08s linear;
-      }
-      @keyframes inntour-float {
-        0%, 100% { transform: translateY(0px) rotate(0deg); }
-        25% { transform: translateY(-10px) rotate(1deg); }
-        50% { transform: translateY(-6px) rotate(0deg); }
-        75% { transform: translateY(-12px) rotate(-1deg); }
-      }
-    </style>
     <script type="module" crossorigin src="/assets/index-Bhg8UQGm.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/vendor-react-CY4oDSF8.js">
     <link rel="modulepreload" crossorigin href="/assets/vendor-motion-DQMF-AB3.js">
     <link rel="modulepreload" crossorigin href="/assets/vendor-state-BhVQ09Dt.js">
     <link rel="stylesheet" crossorigin href="/assets/index-D9GWNotR.css">
+
+    <style>
+      /* ============================================================
+         InnTour / MetaBorghi Design System — Global Brand Override
+         Verde #00D084 | Ciano #00B4D8 | Giallo Neon #F0FF00
+      ============================================================ */
+
+      /* ── CSS Custom Properties ── */
+      :root {
+        --color-brand:           #00D084;
+        --color-cyan:            #00B4D8;
+        --color-yellow:          #F0FF00;
+        --color-overlay-green:   #00FFB3;
+        --color-overlay-cyan:    #00E5FF;
+        --color-text-primary:    #1F2937;
+        --color-text-secondary:  #374151;
+        --color-text-muted:      #6B7280;
+        --color-text-card:       #4B5563;
+        --color-bg:              #FFFFFF;
+        --color-bg-light1:       #F5F5F5;
+        --color-bg-light2:       #EBEBEB;
+        --color-bg-faq:          #F9FAFB;
+        --color-bg-mint:         #E0FFF4;
+        --color-bg-azure:        #E0F7FF;
+        --color-footer-bg:       #111827;
+        --color-border:          #E5E7EB;
+
+        --gradient-brand:        linear-gradient(90deg, #00D084 0%, #00B4D8 50%, #F0FF00 100%);
+        --gradient-hero-text:    linear-gradient(90deg, #F0FF00, #00FFB3, #00E5FF, #F0FF00, #00FFB3, #00E5FF);
+        --gradient-video-overlay:linear-gradient(135deg, rgba(0,208,132,0.3), rgba(0,180,216,0.3));
+        --gradient-sections:     linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 50%, #EBEBEB 100%);
+        --gradient-footer:       linear-gradient(135deg, #1F2937 0%, #111827 100%);
+        --gradient-btn:          linear-gradient(90deg, rgba(0,208,132,0.8), rgba(0,180,216,0.8), rgba(240,255,0,0.8));
+        --gradient-faq-active:   linear-gradient(135deg, rgba(0,208,132,0.9), rgba(0,180,216,0.9));
+
+        --font-system:           -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                                 "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+        --line-height-base:      1.6;
+        --radius-card:           2rem;
+        --radius-pill:           3rem;
+        --radius-sm:             1.5rem;
+        --container-max:         1200px;
+      }
+
+      /* ── Font system (sostituisce Google Fonts) ── */
+      *, *::before, *::after {
+        font-family: var(--font-system) !important;
+        line-height: var(--line-height-base);
+        box-sizing: border-box;
+      }
+
+      /* ── Body ── */
+      body {
+        background-color: var(--color-bg) !important;
+        color: var(--color-text-primary) !important;
+      }
+
+      /* Override Tailwind custom color classes */
+      .bg-cream-50  { background-color: var(--color-bg) !important; }
+      .text-stone-800 { color: var(--color-text-primary) !important; }
+      .font-body    { font-family: var(--font-system) !important; }
+
+      /* ── Scroll Progress Bar (4px → 6px) ── */
+      #inntour-scroll-bar {
+        position: fixed;
+        top: 0; left: 0;
+        height: 6px;
+        width: 0%;
+        background: var(--gradient-brand);
+        z-index: 9999;
+        pointer-events: none;
+        transition: width 0.08s linear;
+      }
+
+      /* ── Animazioni ── */
+      @keyframes gradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50%       { background-position: 100% 50%; }
+      }
+      @keyframes floating {
+        0%,  100% { transform: translateY(0px)   rotate(0deg);  }
+        25%        { transform: translateY(-10px) rotate(1deg);  }
+        50%        { transform: translateY(-6px)  rotate(0deg);  }
+        75%        { transform: translateY(-12px) rotate(-1deg); }
+      }
+      /* alias per il logo fluttuante già presente */
+      @keyframes inntour-float {
+        0%,  100% { transform: translateY(0px)   rotate(0deg);  }
+        25%        { transform: translateY(-10px) rotate(1deg);  }
+        50%        { transform: translateY(-6px)  rotate(0deg);  }
+        75%        { transform: translateY(-12px) rotate(-1deg); }
+      }
+      @keyframes rotateConic {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+      }
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0);    }
+      }
+
+      /* ── Divisore di sezione ── */
+      .section-divider {
+        width: 96px;
+        height: 6px;
+        background: var(--gradient-brand);
+        border-radius: var(--radius-pill);
+        box-shadow: 0 4px 12px rgba(0,208,132,0.3);
+        margin: 0 auto;
+      }
+
+      /* ── Cards – Glassmorphism base ── */
+      .card {
+        background: rgba(255,255,255,0.6);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-radius: var(--radius-card);
+        border: 2px solid rgba(0,208,132,0.3);
+        box-shadow: 0 8px 32px rgba(0,208,132,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 16px 48px rgba(0,208,132,0.2);
+        border-color: rgba(0,208,132,0.5);
+      }
+
+      /* ── Audience featured card ── */
+      .audience-featured {
+        background: rgba(224,255,244,0.8) !important;
+        border: 3px solid #00D084 !important;
+        box-shadow: 0 12px 48px rgba(0,208,132,0.2) !important;
+      }
+
+      /* ── Value card (glassmorphism leggero, bordo ciano) ── */
+      .value-card {
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 2px solid rgba(0,180,216,0.2);
+        border-radius: var(--radius-card);
+      }
+
+      /* ── Bottoni ── */
+      .btn-primary {
+        background: var(--gradient-btn);
+        background-size: 200% 200%;
+        animation: gradientShift 4s ease-in-out infinite;
+        color: #ffffff;
+        border: 2px solid transparent;
+        border-radius: var(--radius-pill);
+        font-weight: 600;
+        font-size: 1.125rem;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 16px rgba(0,208,132,0.3);
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+      .btn-outline {
+        background: rgba(224,255,244,0.5);
+        color: #00D084;
+        border: 2px solid rgba(0,208,132,0.4);
+        border-radius: var(--radius-pill);
+        font-weight: 600;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+      .btn-ghost {
+        background: transparent;
+        color: #4B5563;
+        border: 2px solid transparent;
+        border-radius: var(--radius-pill);
+        font-weight: 600;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+      .btn-ghost:hover {
+        background: rgba(224,255,244,0.5);
+        color: #00D084;
+      }
+
+      /* ── Badge / Pill Labels ── */
+      .badge, .pill, .tag {
+        border-radius: var(--radius-pill);
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.075em;
+      }
+      .badge-dark {
+        background: rgba(31,41,55,0.8);
+        color: #ffffff;
+      }
+      .badge-brand {
+        background: var(--gradient-brand);
+        color: #ffffff;
+        border: 2px solid rgba(255,255,255,0.3);
+        box-shadow: 0 2px 8px rgba(0,208,132,0.4);
+      }
+
+      /* ── Testo con gradient hero animato ── */
+      .gradient-text, .hero-gradient-text {
+        background: var(--gradient-hero-text);
+        background-size: 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: gradientShift 12s ease-in-out infinite;
+      }
+
+      /* ── Stat values con gradient brand ── */
+      .stat-value {
+        background: var(--gradient-brand);
+        background-size: 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: gradientShift 12s ease-in-out infinite;
+      }
+
+      /* ── Hero video overlay ── */
+      .hero-video-overlay {
+        background: var(--gradient-video-overlay);
+      }
+
+      /* ── Sezioni animate (sfondo rotante conic a bassa opacità) ── */
+      .section-animated-bg {
+        position: relative;
+        overflow: hidden;
+      }
+      .section-animated-bg::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: conic-gradient(from 0deg, #00D084, #00B4D8, #F0FF00, #00D084);
+        opacity: 0.03;
+        animation: rotateConic 30s linear infinite;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ── Animazione floating (logo / elementi hero) ── */
+      .floating {
+        animation: floating 6s ease-in-out infinite;
+      }
+
+      /* ── Animazione fadeInUp con stagger ── */
+      .fade-in-up {
+        animation: fadeInUp 0.6s ease-out both;
+      }
+      .fade-in-up:nth-child(1) { animation-delay: 0s;    }
+      .fade-in-up:nth-child(2) { animation-delay: 0.1s;  }
+      .fade-in-up:nth-child(3) { animation-delay: 0.2s;  }
+      .fade-in-up:nth-child(4) { animation-delay: 0.3s;  }
+      .fade-in-up:nth-child(5) { animation-delay: 0.4s;  }
+      .fade-in-up:nth-child(6) { animation-delay: 0.5s;  }
+
+      /* ── Footer ── */
+      footer, .footer {
+        background: var(--gradient-footer) !important;
+        color: rgba(255,255,255,0.8) !important;
+        font-size: 0.875rem;
+      }
+
+      /* ── Social bar (sopra footer) ── */
+      .social-bar {
+        background: rgba(31,41,55,0.04);
+        border-top: 1px solid rgba(0,208,132,0.15);
+      }
+      .social-bar a:hover {
+        color: #00D084;
+        transform: translateY(-2px);
+      }
+
+      /* ── Link hover accent ── */
+      a { transition: color 0.2s ease; }
+
+      /* ── Focus ring brand ── */
+      *:focus-visible {
+        outline: 2px solid var(--color-brand);
+        outline-offset: 2px;
+      }
+
+      /* ── Glassmorphism utility generica ── */
+      .glass {
+        background: rgba(255,255,255,0.6);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 2px solid rgba(0,208,132,0.2);
+        border-radius: var(--radius-card);
+      }
+      .glass-light {
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 2px solid rgba(0,180,216,0.2);
+        border-radius: var(--radius-card);
+      }
+
+      /* ── FAQ tab attivo ── */
+      .faq-tab-active {
+        background: var(--gradient-faq-active) !important;
+        color: #ffffff !important;
+      }
+
+      /* ── Container standard ── */
+      .container-brand {
+        max-width: var(--container-max);
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      /* ── Sezione padding standard ── */
+      .section-padding {
+        padding: 5rem 2rem;
+      }
+    </style>
   </head>
   <body class="bg-cream-50 text-stone-800 font-body antialiased">
     <div id="inntour-scroll-bar"></div>
