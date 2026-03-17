@@ -9,6 +9,11 @@ $counts = [
     'esperienze'  => $db->query("SELECT COUNT(*) FROM experiences")->fetchColumn(),
     'artigianato' => $db->query("SELECT COUNT(*) FROM craft_products")->fetchColumn(),
 ];
+// Nuove tabelle (potrebbero non esistere ancora — gestisci con try/catch)
+foreach (['prodotti' => 'food_products', 'ospitalita' => 'accommodations', 'ristorazione' => 'restaurants'] as $k => $t) {
+    try { $counts[$k] = $db->query("SELECT COUNT(*) FROM `$t`")->fetchColumn(); }
+    catch (PDOException $e) { $counts[$k] = '–'; }
+}
 
 $publishResult = null;
 if (isset($_GET['publish'])) {
@@ -44,6 +49,9 @@ require '_layout.php';
     ['aziende', '🏢', 'Aziende'],
     ['esperienze', '🎭', 'Esperienze'],
     ['artigianato', '🏺', 'Artigianato'],
+    ['prodotti', '🧀', 'Prodotti Food'],
+    ['ospitalita', '🏨', 'Ospitalità'],
+    ['ristorazione', '🍽️', 'Ristorazione'],
   ] as [$key, $icon, $label]): ?>
   <div class="bg-slate-800 rounded-xl p-5 border border-slate-700">
     <div class="text-2xl mb-2"><?= $icon ?></div>
@@ -69,10 +77,14 @@ require '_layout.php';
 <!-- Quick links -->
 <div class="grid md:grid-cols-2 gap-4">
   <?php foreach ([
-    ['/api/admin/borghi.php',     '🏔️', 'Gestisci Borghi',     'Modifica descrizioni, ristoranti, immagini'],
-    ['/api/admin/aziende.php',    '🏢', 'Gestisci Aziende',    'Aggiorna schede produttori e artigiani'],
-    ['/api/admin/esperienze.php', '🎭', 'Gestisci Esperienze', 'Modifica esperienze turistiche'],
-    ['/api/admin/artigianato.php','🏺', 'Gestisci Artigianato','Aggiorna prodotti artigianali'],
+    ['/api/admin/borghi.php',         '🏔️', 'Gestisci Borghi',       'Modifica descrizioni, ristoranti, immagini'],
+    ['/api/admin/aziende.php',        '🏢', 'Gestisci Aziende',      'Aggiorna schede produttori e artigiani'],
+    ['/api/admin/esperienze.php',     '🎭', 'Gestisci Esperienze',   'Modifica esperienze turistiche'],
+    ['/api/admin/artigianato.php',    '🏺', 'Gestisci Artigianato',  'Aggiorna prodotti artigianali'],
+    ['/api/admin/prodotti.php',       '🧀', 'Gestisci Prodotti Food','Formaggi, salumi, eccellenze gastronomiche'],
+    ['/api/admin/ospitalita.php',     '🏨', 'Gestisci Ospitalità',   'Masserie, agriturismi, B&B'],
+    ['/api/admin/ristorazione.php',   '🍽️', 'Gestisci Ristorazione', 'Ristoranti, trattorie, osterie'],
+    ['/api/admin/seed_lacedonia.php', '🌱', 'Seed Lacedonia',        'Popola il DB con i dati di esempio Lacedonia'],
   ] as [$url, $icon, $title, $desc]): ?>
   <a href="<?= $url ?>" class="bg-slate-800 hover:bg-slate-700 rounded-xl p-5 border border-slate-700 transition-colors group">
     <div class="text-xl mb-2"><?= $icon ?></div>

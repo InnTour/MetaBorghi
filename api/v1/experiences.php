@@ -39,10 +39,17 @@ if ($method === 'GET') {
         if (!$row) { http_response_code(404); echo json_encode(['error' => 'Not found']); exit; }
         echo json_encode(buildExperience($db, $row));
     } else {
-        $filter = $_GET['category'] ?? null;
-        if ($filter) {
+        $category = $_GET['category'] ?? null;
+        $borough  = $_GET['borough']  ?? null;
+        if ($category && $borough) {
+            $stmt = $db->prepare("SELECT * FROM experiences WHERE category = ? AND borough_id = ? AND is_active = 1 ORDER BY title");
+            $stmt->execute([$category, $borough]);
+        } elseif ($category) {
             $stmt = $db->prepare("SELECT * FROM experiences WHERE category = ? AND is_active = 1 ORDER BY title");
-            $stmt->execute([$filter]);
+            $stmt->execute([$category]);
+        } elseif ($borough) {
+            $stmt = $db->prepare("SELECT * FROM experiences WHERE borough_id = ? AND is_active = 1 ORDER BY title");
+            $stmt->execute([$borough]);
         } else {
             $stmt = $db->query("SELECT * FROM experiences ORDER BY title ASC");
         }

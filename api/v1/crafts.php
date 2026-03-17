@@ -43,7 +43,14 @@ if ($method === 'GET') {
         if (!$row) { http_response_code(404); echo json_encode(['error' => 'Not found']); exit; }
         echo json_encode(buildCraft($db, $row));
     } else {
-        $rows = $db->query("SELECT * FROM craft_products ORDER BY name ASC")->fetchAll();
+        $borough = $_GET['borough'] ?? null;
+        if ($borough) {
+            $stmt = $db->prepare("SELECT * FROM craft_products WHERE borough_id = ? AND is_active = 1 ORDER BY name");
+            $stmt->execute([$borough]);
+            $rows = $stmt->fetchAll();
+        } else {
+            $rows = $db->query("SELECT * FROM craft_products ORDER BY name ASC")->fetchAll();
+        }
         echo json_encode(array_map(fn($r) => buildCraft($db, $r), $rows));
     }
     exit;
