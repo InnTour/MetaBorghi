@@ -1,7 +1,4 @@
 <?php
-// Include in ogni pagina admin: <?php $pageTitle='...'; require '_layout.php'; ?>
-// Poi contenuto, poi: <?php require '_footer.php'; ?>
-?>
 <!DOCTYPE html>
 <html lang="it">
 <head>
