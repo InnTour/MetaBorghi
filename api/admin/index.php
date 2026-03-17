@@ -17,10 +17,18 @@ foreach (['prodotti' => 'food_products', 'ospitalita' => 'accommodations', 'rist
 
 $publishResult = null;
 if (isset($_GET['publish'])) {
-    $url = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['HTTP_HOST']
-         . '/api/export/generate.php?token=' . API_TOKEN;
-    $resp = @file_get_contents($url);
-    $publishResult = $resp ? json_decode($resp, true) : ['error' => 'Impossibile contattare generate.php'];
+    try {
+        require_once __DIR__ . '/../export/_generate_functions.php';
+        $generated = [
+            'boroughs'    => generateBoroughs($db),
+            'companies'   => generateCompanies($db),
+            'experiences' => generateExperiences($db),
+            'crafts'      => generateCrafts($db),
+        ];
+        $publishResult = ['ok' => true, 'generated' => $generated];
+    } catch (Throwable $e) {
+        $publishResult = ['error' => $e->getMessage()];
+    }
 }
 
 $pageTitle = 'Dashboard';
