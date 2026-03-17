@@ -174,6 +174,7 @@ CREATE TABLE IF NOT EXISTS `experience_languages` (
   `id`             INT AUTO_INCREMENT PRIMARY KEY,
   `experience_id`  VARCHAR(100) NOT NULL,
   `lang`           VARCHAR(50)  NOT NULL,
+  `sort_order`     INT DEFAULT 0,
   INDEX (`experience_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -292,4 +293,7 @@ ALTER TABLE `craft_material_types`
   ADD COLUMN IF NOT EXISTS `sort_order` INT DEFAULT 0;
 
 ALTER TABLE `experience_seasonal_tags`
+  ADD COLUMN IF NOT EXISTS `sort_order` INT DEFAULT 0;
+
+ALTER TABLE `experience_languages`
   ADD COLUMN IF NOT EXISTS `sort_order` INT DEFAULT 0;
