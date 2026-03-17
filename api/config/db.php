@@ -37,6 +37,21 @@ function getDB(): PDO {
             $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
         } catch (PDOException $e) {
             http_response_code(500);
+            $msg = htmlspecialchars($e->getMessage());
+            // In admin panel context (session active) show an HTML error, not raw JSON
+            if (session_status() === PHP_SESSION_ACTIVE) {
+                die('<!DOCTYPE html><html><head><meta charset="UTF-8">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>body{background:#0f172a}</style></head>
+<body class="min-h-screen flex items-center justify-center p-8">
+<div class="max-w-lg w-full bg-red-900/40 border border-red-600 rounded-2xl p-8 text-red-200 font-mono text-sm">
+<p class="text-xl font-bold text-red-400 mb-4">❌ Errore connessione database</p>
+<p class="mb-4">' . $msg . '</p>
+<p class="text-red-300 text-xs">Verifica le credenziali in <strong>api/config/db.php</strong>:<br>
+DB_HOST, DB_NAME, DB_USER, DB_PASS devono corrispondere ai valori Hostinger.</p>
+<a href="/api/admin/login.php" class="mt-6 inline-block text-red-400 hover:text-white underline">← Torna al login</a>
+</div></body></html>');
+            }
             die(json_encode(['error' => 'Database connection failed']));
         }
     }
@@ -59,7 +74,9 @@ function requireAuth(): void {
 
 // Verifica sessione admin panel
 function requireAdminSession(): void {
-    session_start();
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     if (empty($_SESSION['admin_logged_in'])) {
         header('Location: /api/admin/login.php');
         exit;

@@ -118,6 +118,7 @@ CREATE TABLE IF NOT EXISTS `company_certifications` (
   `id`          INT AUTO_INCREMENT PRIMARY KEY,
   `company_id`  VARCHAR(100) NOT NULL,
   `value`       VARCHAR(100) NOT NULL,
+  `sort_order`  INT DEFAULT 0,
   INDEX (`company_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -125,6 +126,7 @@ CREATE TABLE IF NOT EXISTS `company_b2b_interests` (
   `id`          INT AUTO_INCREMENT PRIMARY KEY,
   `company_id`  VARCHAR(100) NOT NULL,
   `value`       VARCHAR(100) NOT NULL,
+  `sort_order`  INT DEFAULT 0,
   INDEX (`company_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -203,6 +205,7 @@ CREATE TABLE IF NOT EXISTS `experience_seasonal_tags` (
   `id`             INT AUTO_INCREMENT PRIMARY KEY,
   `experience_id`  VARCHAR(100) NOT NULL,
   `value`          VARCHAR(100) NOT NULL,
+  `sort_order`     INT DEFAULT 0,
   INDEX (`experience_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -247,9 +250,10 @@ CREATE TABLE IF NOT EXISTS `craft_products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `craft_material_types` (
-  `id`        INT AUTO_INCREMENT PRIMARY KEY,
-  `craft_id`  VARCHAR(100) NOT NULL,
-  `value`     VARCHAR(100) NOT NULL,
+  `id`          INT AUTO_INCREMENT PRIMARY KEY,
+  `craft_id`    VARCHAR(100) NOT NULL,
+  `value`       VARCHAR(100) NOT NULL,
+  `sort_order`  INT DEFAULT 0,
   INDEX (`craft_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -272,3 +276,20 @@ CREATE TABLE IF NOT EXISTS `craft_process_steps` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 SET foreign_key_checks = 1;
+
+-- ============================================================
+-- MIGRATION — Aggiunta sort_order a tabelle che ne erano prive
+-- Eseguire SOLO se lo schema era già stato importato in precedenza
+-- (phpMyAdmin > SQL > incolla solo questa sezione)
+-- ============================================================
+ALTER TABLE `company_certifications`
+  ADD COLUMN IF NOT EXISTS `sort_order` INT DEFAULT 0;
+
+ALTER TABLE `company_b2b_interests`
+  ADD COLUMN IF NOT EXISTS `sort_order` INT DEFAULT 0;
+
+ALTER TABLE `craft_material_types`
+  ADD COLUMN IF NOT EXISTS `sort_order` INT DEFAULT 0;
+
+ALTER TABLE `experience_seasonal_tags`
+  ADD COLUMN IF NOT EXISTS `sort_order` INT DEFAULT 0;

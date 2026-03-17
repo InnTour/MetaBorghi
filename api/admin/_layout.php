@@ -11,8 +11,14 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   body { background: #0f172a; }
-  .nav-link { @apply flex items-center gap-2 px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white text-sm transition-colors; }
-  .nav-link.active { @apply bg-emerald-600 text-white; }
+  .nav-link {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.5rem 0.75rem; border-radius: 0.5rem;
+    color: rgb(203 213 225); font-size: 0.875rem;
+    text-decoration: none; transition: background-color 0.15s, color 0.15s;
+  }
+  .nav-link:hover { background-color: rgb(51 65 85); color: white; }
+  .nav-link.active { background-color: rgb(5 150 105); color: white; }
 </style>
 </head>
 <body class="min-h-screen text-white">
