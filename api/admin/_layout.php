@@ -45,6 +45,15 @@
         <a href="/api/admin/artigianato.php" class="nav-link <?= ($pageTitle==='Artigianato'?'active':'') ?>">
           <span>🏺</span> Artigianato
         </a>
+        <a href="/api/admin/prodotti.php" class="nav-link <?= ($pageTitle==='Prodotti Food'?'active':'') ?>">
+          <span>🧀</span> Prodotti Food
+        </a>
+        <a href="/api/admin/ospitalita.php" class="nav-link <?= ($pageTitle==='Ospitalità'?'active':'') ?>">
+          <span>🏨</span> Ospitalità
+        </a>
+        <a href="/api/admin/ristorazione.php" class="nav-link <?= ($pageTitle==='Ristorazione'?'active':'') ?>">
+          <span>🍽️</span> Ristorazione
+        </a>
       </nav>
       <div class="px-3 py-4 border-t border-slate-700">
         <a href="/api/admin/logout.php" class="nav-link text-red-400 hover:text-red-300 hover:bg-red-900/20">
