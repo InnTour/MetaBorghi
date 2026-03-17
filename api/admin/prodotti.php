@@ -49,18 +49,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 render:
 
-$list = $db->query("SELECT id, name, borough_id, category FROM food_products ORDER BY name ASC")->fetchAll();
+if (isset($_GET['delete'])) {
+    $db->prepare("DELETE FROM food_products WHERE id=?")->execute([$_GET['delete']]);
+    header('Location: prodotti.php');
+    exit;
+}
+
+try {
+    $list = $db->query("SELECT id, name, borough_id, category FROM food_products ORDER BY name ASC")->fetchAll();
+} catch (PDOException $e) {
+    $pageTitle = 'Prodotti Food';
+    require '_layout.php';
+    echo '<div class="bg-red-900/40 border border-red-600 rounded-xl p-6 text-red-300">
+        <p class="font-bold mb-2">❌ Tabella <code>food_products</code> non trovata nel database.</p>
+        <p class="text-sm mb-3">Esegui prima il seed per creare le tabelle e inserire i dati di esempio.</p>
+        <a href="seed_lacedonia.php" class="inline-block px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm rounded-lg">🌱 Esegui Seed Lacedonia</a>
+    </div>';
+    require '_footer.php';
+    exit;
+}
 $sel  = null;
 if (isset($_GET['edit'])) {
     $stmt = $db->prepare("SELECT * FROM food_products WHERE id=?");
     $stmt->execute([$_GET['edit']]);
     $sel = $stmt->fetch();
-}
-
-if (isset($_GET['delete'])) {
-    $db->prepare("DELETE FROM food_products WHERE id=?")->execute([$_GET['delete']]);
-    header('Location: prodotti.php');
-    exit;
 }
 
 $pageTitle = 'Prodotti Food';
