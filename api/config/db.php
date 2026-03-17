@@ -5,21 +5,21 @@
 // ============================================================
 
 define('DB_HOST',     'localhost');      // Su Hostinger: generalmente localhost
-define('DB_NAME',     'metaborghi');     // Nome database su phpMyAdmin
-define('DB_USER',     'mb_user');        // Utente MySQL Hostinger
-define('DB_PASS',     'CAMBIA_QUESTA_PASSWORD');
+define('DB_NAME',     'u468374447_metaborghi');     // Nome database su phpMyAdmin
+define('DB_USER',     'u468374447_admin');        // Utente MySQL Hostinger
+define('DB_PASS', '8TTusangol!');
 define('DB_CHARSET',  'utf8mb4');
 
 // Token API per autenticazione endpoint di scrittura e export
-define('API_TOKEN',   'CAMBIA_QUESTO_TOKEN_SEGRETO');
+define('API_TOKEN',   'kshdfertwyuejmfhdgetw285&%$£9WED');
 
 // Credenziali admin panel
 define('ADMIN_USER',  'admin');
-define('ADMIN_PASS',  'CAMBIA_QUESTA_PASSWORD_ADMIN');
+define('ADMIN_PASS',  '8TTusangol!');
 
 // Percorso assoluto della cartella assets/ della SPA
 // Su Hostinger: /home/u123456789/public_html/assets/
-define('ASSETS_PATH', __DIR__ . '/../../assets/');
+define('ASSETS_PATH', '/home/u468374447/domains/metaborghi.org/public_html/assets/');
 
 // ============================================================
 // Connessione PDO — usata da tutti i file API
