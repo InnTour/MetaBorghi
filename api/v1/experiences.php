@@ -66,8 +66,8 @@ if ($method === 'POST') {
         (id, slug, title, tagline, description_short, description_long, category,
          provider_id, borough_id, lat, lng, duration_minutes, max_participants,
          min_participants, price_per_person, cancellation_policy, difficulty_level,
-         accessibility_info, rating, reviews_count, is_active)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+         accessibility_info, rating, reviews_count, is_active, cover_image)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
     ->execute(_expValues($body));
     _saveExpArrays($db, $body);
     http_response_code(201);
@@ -80,7 +80,7 @@ if ($method === 'PUT' && $id) {
         slug=?, title=?, tagline=?, description_short=?, description_long=?, category=?,
         provider_id=?, borough_id=?, lat=?, lng=?, duration_minutes=?, max_participants=?,
         min_participants=?, price_per_person=?, cancellation_policy=?, difficulty_level=?,
-        accessibility_info=?, rating=?, reviews_count=?, is_active=? WHERE id=?")
+        accessibility_info=?, rating=?, reviews_count=?, is_active=?, cover_image=? WHERE id=?")
     ->execute(array_merge(array_slice(_expValues($body), 1), [$id]));
     _saveExpArrays($db, array_merge($body, ['id' => $id]));
     echo json_encode(['ok' => true]);
@@ -113,6 +113,7 @@ function _expValues(array $b): array {
         $b['accessibility_info'] ?? null,
         $b['rating'] ?? 0, $b['reviews_count'] ?? 0,
         $b['is_active'] ?? 1,
+        $b['cover_image'] ?? null,
     ];
 }
 

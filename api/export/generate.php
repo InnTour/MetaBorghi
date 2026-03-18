@@ -34,6 +34,15 @@ if ($target === 'all' || $target === 'experiences') {
 if ($target === 'all' || $target === 'crafts') {
     $results['crafts'] = generateCrafts($db);
 }
+if ($target === 'all' || $target === 'food_products') {
+    $results['food_products'] = generateFoodProducts($db);
+}
+if ($target === 'all' || $target === 'accommodations') {
+    $results['accommodations'] = generateAccommodations($db);
+}
+if ($target === 'all' || $target === 'restaurants') {
+    $results['restaurants'] = generateRestaurants($db);
+}
 
 echo json_encode(['ok' => true, 'generated' => $results]);
 

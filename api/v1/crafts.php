@@ -64,8 +64,8 @@ if ($method === 'POST') {
         (id, slug, name, description_short, description_long, price,
          is_custom_order_available, lead_time_days, technique_description,
          dimensions, weight_grams, artisan_id, borough_id, is_unique_piece,
-         production_series_qty, rating, reviews_count, stock_qty, is_active)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+         production_series_qty, rating, reviews_count, stock_qty, is_active, cover_image)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
     ->execute(_craftValues($body));
     _saveCraftArrays($db, $body);
     http_response_code(201);
@@ -78,7 +78,7 @@ if ($method === 'PUT' && $id) {
         slug=?, name=?, description_short=?, description_long=?, price=?,
         is_custom_order_available=?, lead_time_days=?, technique_description=?,
         dimensions=?, weight_grams=?, artisan_id=?, borough_id=?, is_unique_piece=?,
-        production_series_qty=?, rating=?, reviews_count=?, stock_qty=?, is_active=?
+        production_series_qty=?, rating=?, reviews_count=?, stock_qty=?, is_active=?, cover_image=?
         WHERE id=?")
     ->execute(array_merge(array_slice(_craftValues($body), 1), [$id]));
     _saveCraftArrays($db, array_merge($body, ['id' => $id]));
@@ -110,6 +110,7 @@ function _craftValues(array $b): array {
         $b['is_unique_piece'] ? 1 : 0, $b['production_series_qty'] ?? null,
         $b['rating'] ?? 0, $b['reviews_count'] ?? 0,
         $b['stock_qty'] ?? 0, $b['is_active'] ?? 1,
+        $b['cover_image'] ?? null,
     ];
 }
 

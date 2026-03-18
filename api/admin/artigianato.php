@@ -11,6 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $exists = $db->prepare("SELECT id FROM craft_products WHERE id=?");
     $exists->execute([$id]);
 
+    $coverPath = handleCoverUpload('cover_image', 'craft', $id);
+
     $f = [
         'slug'                      => trim($_POST['slug']                        ?? $id),
         'name'                      => trim($_POST['name']                        ?? ''),
@@ -31,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'stock_qty'                 => (int)($_POST['stock_qty']                  ?? 0),
         'is_active'                 => isset($_POST['is_active'])                  ? 1 : 0,
     ];
+    if ($coverPath) $f['cover_image'] = $coverPath;
 
     if ($exists->fetch()) {
         $set = implode(',', array_map(fn($k) => "`$k`=?", array_keys($f)));
@@ -47,6 +50,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $msg = '✅ Prodotto artigianale salvato.';
 }
 render:
+
+if (isset($_GET['delete'])) {
+    $did = $_GET['delete'];
+    foreach (['craft_material_types','craft_customization_options','craft_process_steps'] as $t) {
+        $db->prepare("DELETE FROM `$t` WHERE craft_id = ?")->execute([$did]);
+    }
+    $db->prepare("DELETE FROM craft_products WHERE id=?")->execute([$did]);
+    header('Location: artigianato.php');
+    exit;
+}
 
 $list = $db->query("SELECT id, name, borough_id, price FROM craft_products ORDER BY name ASC")->fetchAll();
 $sel = null;
@@ -91,8 +104,17 @@ require '_layout.php';
 
   <div class="md:col-span-2">
     <?php if ($sel !== null || isset($_GET['edit'])): ?>
-    <form method="POST" class="bg-slate-800 rounded-xl border border-slate-700 p-6 space-y-4">
+    <form method="POST" enctype="multipart/form-data" class="bg-slate-800 rounded-xl border border-slate-700 p-6 space-y-4">
       <h3 class="font-semibold text-white mb-2"><?= $sel ? htmlspecialchars($sel['name']) : 'Nuovo prodotto' ?></h3>
+      <!-- Cover Image Upload -->
+      <div>
+        <label class="block text-xs text-slate-400 mb-1">Immagine di copertina</label>
+        <?php if (!empty($sel['cover_image'])): ?>
+          <div class="mb-2"><img src="<?= htmlspecialchars($sel['cover_image']) ?>" alt="Cover" class="h-32 rounded-lg object-cover"></div>
+        <?php endif; ?>
+        <input type="file" name="cover_image" accept="image/*"
+          class="w-full bg-slate-700 text-white rounded-lg px-3 py-2 text-sm border border-slate-600 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-emerald-600 file:text-white file:text-xs file:cursor-pointer">
+      </div>
       <div class="grid grid-cols-2 gap-4">
         <?php
         $inp = fn($n,$l,$t='text',$full=false) =>
@@ -136,6 +158,11 @@ require '_layout.php';
       </div>
       <div class="flex gap-3 pt-2">
         <button type="submit" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg">Salva</button>
+        <?php if ($sel): ?>
+        <a href="artigianato.php?delete=<?= urlencode($sel['id']) ?>"
+           onclick="return confirm('Eliminare questo prodotto?')"
+           class="px-6 py-2.5 bg-red-700 hover:bg-red-600 text-white text-sm rounded-lg transition-colors">Elimina</a>
+        <?php endif; ?>
         <a href="artigianato.php" class="px-6 py-2.5 bg-slate-600 hover:bg-slate-500 text-white text-sm rounded-lg">Annulla</a>
       </div>
     </form>

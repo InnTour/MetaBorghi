@@ -65,8 +65,8 @@ if ($method === 'POST') {
          lat, lng, contact_email, contact_phone, website_url, social_instagram,
          social_facebook, social_linkedin, tier, is_verified, is_active,
          b2b_open_for_contact, founder_name, founder_quote, main_video_url,
-         virtual_tour_url, hero_image_index, hero_image_alt)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+         virtual_tour_url, hero_image_index, hero_image_alt, cover_image)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
     ->execute(_companyValues($body));
     _saveCompanyArrays($db, $body);
     http_response_code(201);
@@ -82,7 +82,7 @@ if ($method === 'PUT' && $id) {
         website_url=?, social_instagram=?, social_facebook=?, social_linkedin=?,
         tier=?, is_verified=?, is_active=?, b2b_open_for_contact=?, founder_name=?,
         founder_quote=?, main_video_url=?, virtual_tour_url=?, hero_image_index=?,
-        hero_image_alt=? WHERE id=?")
+        hero_image_alt=?, cover_image=? WHERE id=?")
     ->execute(array_merge(array_slice(_companyValues($body), 1), [$id]));
     _saveCompanyArrays($db, array_merge($body, ['id' => $id]));
     echo json_encode(['ok' => true]);
@@ -120,6 +120,7 @@ function _companyValues(array $b): array {
         $b['founder_name'] ?? null, $b['founder_quote'] ?? null,
         $b['main_video_url'] ?? null, $b['virtual_tour_url'] ?? null,
         $b['hero_image_index'] ?? 0, $b['hero_image_alt'] ?? null,
+        $b['cover_image'] ?? null,
     ];
 }
 
