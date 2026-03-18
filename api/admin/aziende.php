@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $exists->execute([$id]);
 
     $coverPath = handleCoverUpload('cover_image', 'company', $id);
+    if ($coverPath) ensureCoverImageColumn($db, 'companies');
 
     $f = [
         'slug'               => trim($_POST['slug']               ?? $id),

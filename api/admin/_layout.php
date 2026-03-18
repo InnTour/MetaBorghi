@@ -51,6 +51,9 @@
           <span>🍽️</span> Ristorazione
         </a>
         <div class="border-t border-slate-700 mt-3 pt-3">
+          <a href="/api/admin/comuni.php" class="nav-link <?= ($pageTitle==='Comuni B2G'?'active':'') ?>">
+            <span>🏛️</span> Comuni B2G
+          </a>
           <a href="/api/admin/statistiche.php" class="nav-link <?= ($pageTitle==='Statistiche'?'active':'') ?>">
             <span>📊</span> Statistiche
           </a>

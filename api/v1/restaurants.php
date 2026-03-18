@@ -13,9 +13,10 @@ function buildRestaurant(PDO $db, array $row): array {
     $row['coordinates']        = ['lat' => (float)$row['lat'], 'lng' => (float)$row['lng']];
     unset($row['lat'], $row['lng']);
     $row['accepts_groups']      = (bool)$row['accepts_groups'];
-    $row['b2b_open_for_contact']= (bool)$row['b2b_open_for_contact'];
+    $row['b2b_open_for_contact']= (bool)($row['b2b_open_for_contact'] ?? false);
     $row['is_active']           = (bool)$row['is_active'];
     $row['is_featured']         = (bool)$row['is_featured'];
+    $row['is_verified']         = (bool)($row['is_verified'] ?? false);
     return $row;
 }
 
@@ -50,11 +51,12 @@ if ($method === 'POST') {
          cuisine_type, price_range, seats_indoor, seats_outdoor,
          opening_hours, closing_day, specialties, menu_highlights,
          contact_email, contact_phone, website_url,
-         social_instagram, social_facebook, booking_url,
+         social_instagram, social_facebook, social_linkedin, booking_url,
          accepts_groups, max_group_size,
          b2b_open_for_contact, b2b_interests,
+         certifications, founder_name, founder_quote, tier, is_verified,
          is_active, is_featured, cover_image)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
     ->execute(_restValues($body));
     http_response_code(201);
     echo json_encode(['ok' => true, 'id' => $body['id']]);
@@ -69,9 +71,10 @@ if ($method === 'PUT' && $id) {
         cuisine_type=?, price_range=?, seats_indoor=?, seats_outdoor=?,
         opening_hours=?, closing_day=?, specialties=?, menu_highlights=?,
         contact_email=?, contact_phone=?, website_url=?,
-        social_instagram=?, social_facebook=?, booking_url=?,
+        social_instagram=?, social_facebook=?, social_linkedin=?, booking_url=?,
         accepts_groups=?, max_group_size=?,
         b2b_open_for_contact=?, b2b_interests=?,
+        certifications=?, founder_name=?, founder_quote=?, tier=?, is_verified=?,
         is_active=?, is_featured=?, cover_image=? WHERE id=?")
     ->execute(array_merge(array_slice(_restValues($body), 1), [$id]));
     echo json_encode(['ok' => true]);
@@ -102,9 +105,13 @@ function _restValues(array $b): array {
         $b['contact_email'] ?? null, $b['contact_phone'] ?? null,
         $b['website_url'] ?? null,
         $b['social_instagram'] ?? null, $b['social_facebook'] ?? null,
+        $b['social_linkedin'] ?? null,
         $b['booking_url'] ?? null,
-        $b['accepts_groups'] ? 1 : 0, $b['max_group_size'] ?? null,
-        $b['b2b_open_for_contact'] ? 1 : 0, $b['b2b_interests'] ?? null,
+        ($b['accepts_groups'] ?? false) ? 1 : 0, $b['max_group_size'] ?? null,
+        ($b['b2b_open_for_contact'] ?? false) ? 1 : 0, $b['b2b_interests'] ?? null,
+        $b['certifications'] ?? null, $b['founder_name'] ?? null,
+        $b['founder_quote'] ?? null, $b['tier'] ?? 'BASE',
+        ($b['is_verified'] ?? false) ? 1 : 0,
         $b['is_active'] ?? 1, $b['is_featured'] ?? 0,
         $b['cover_image'] ?? null,
     ];

@@ -110,24 +110,57 @@ function fetchArray(PDO $db, string $table, string $fk, string $id, string $col 
 
 // Upload immagine di copertina — restituisce il path relativo o null
 function handleCoverUpload(string $inputName, string $entityType, string $entityId): ?string {
-    if (empty($_FILES[$inputName]['tmp_name']) || $_FILES[$inputName]['error'] !== UPLOAD_ERR_OK) {
+    if (!isset($_FILES[$inputName]) || empty($_FILES[$inputName]['tmp_name']) || $_FILES[$inputName]['error'] !== UPLOAD_ERR_OK) {
         return null;
     }
-    $allowed = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/gif' => 'gif', 'image/webp' => 'webp'];
-    $finfo = new finfo(FILEINFO_MIME_TYPE);
-    $mime  = $finfo->file($_FILES[$inputName]['tmp_name']);
-    if (!isset($allowed[$mime])) return null;
 
-    $ext      = $allowed[$mime];
-    $filename = $entityType . '_' . preg_replace('/[^a-z0-9_-]/', '', $entityId) . '_' . time() . '.' . $ext;
+    // Rileva MIME con fallback per hosting senza finfo
+    $allowedMime = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/gif' => 'gif', 'image/webp' => 'webp'];
+    $allowedExt  = ['jpg' => 'jpg', 'jpeg' => 'jpg', 'png' => 'png', 'gif' => 'gif', 'webp' => 'webp'];
+
+    $mime = null;
+    if (function_exists('mime_content_type')) {
+        $mime = @mime_content_type($_FILES[$inputName]['tmp_name']);
+    }
+    if (!$mime && class_exists('finfo')) {
+        $fi   = new finfo(FILEINFO_MIME_TYPE);
+        $mime = $fi->file($_FILES[$inputName]['tmp_name']);
+    }
+
+    $ext = null;
+    if ($mime && isset($allowedMime[$mime])) {
+        $ext = $allowedMime[$mime];
+    } else {
+        // Fallback: usa l'estensione del file originale
+        $origExt = strtolower(pathinfo($_FILES[$inputName]['name'], PATHINFO_EXTENSION));
+        if (isset($allowedExt[$origExt])) {
+            $ext = $allowedExt[$origExt];
+        }
+    }
+    if (!$ext) return null;
+
+    $safeId   = preg_replace('/[^a-z0-9_-]/', '', strtolower($entityId));
+    $filename = $entityType . '_' . $safeId . '_' . time() . '.' . $ext;
     $destDir  = __DIR__ . '/../uploads/';
-    if (!is_dir($destDir)) mkdir($destDir, 0755, true);
+    if (!is_dir($destDir)) @mkdir($destDir, 0755, true);
     $dest = $destDir . $filename;
 
-    if (move_uploaded_file($_FILES[$inputName]['tmp_name'], $dest)) {
+    if (@move_uploaded_file($_FILES[$inputName]['tmp_name'], $dest)) {
         return '/api/uploads/' . $filename;
     }
     return null;
+}
+
+// Assicura che la colonna cover_image esista in una tabella (auto-migration)
+function ensureCoverImageColumn(PDO $db, string $table): void {
+    static $checked = [];
+    if (isset($checked[$table])) return;
+    $checked[$table] = true;
+    try {
+        $db->query("SELECT `cover_image` FROM `$table` LIMIT 0");
+    } catch (PDOException $e) {
+        $db->exec("ALTER TABLE `$table` ADD COLUMN `cover_image` VARCHAR(500) DEFAULT NULL");
+    }
 }
 
 // Sostituisce array 1-to-many

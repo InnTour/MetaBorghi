@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $exists->execute([$id]);
 
     $coverPath = handleCoverUpload('cover_image', 'borough', $id);
+    if ($coverPath) ensureCoverImageColumn($db, 'boroughs');
 
     $fields = [
         'slug'             => trim($_POST['slug']             ?? $id),

@@ -135,6 +135,40 @@ CREATE TABLE IF NOT EXISTS `restaurants` (
         try { $db->exec("ALTER TABLE `$_t` ADD COLUMN `cover_image` VARCHAR(500) DEFAULT NULL"); } catch (PDOException $e) { /* colonna già presente */ }
     }
 
+    // B2B columns per restaurants
+    foreach (['certifications TEXT DEFAULT NULL','founder_name VARCHAR(200) DEFAULT NULL','founder_quote TEXT DEFAULT NULL',
+              "tier ENUM('BASE','PREMIUM','PLATINUM') DEFAULT 'BASE'",'is_verified TINYINT(1) DEFAULT 0','social_linkedin TEXT DEFAULT NULL'] as $_col) {
+        try { $db->exec("ALTER TABLE `restaurants` ADD COLUMN $_col"); } catch (PDOException $e) {}
+    }
+
+    // B2B columns per accommodations
+    foreach (['certifications TEXT DEFAULT NULL','founder_name VARCHAR(200) DEFAULT NULL','founder_quote TEXT DEFAULT NULL',
+              "tier ENUM('BASE','PREMIUM','PLATINUM') DEFAULT 'BASE'",'is_verified TINYINT(1) DEFAULT 0',
+              'b2b_open_for_contact TINYINT(1) DEFAULT 0','b2b_interests TEXT DEFAULT NULL',
+              'social_instagram TEXT DEFAULT NULL','social_facebook TEXT DEFAULT NULL','social_linkedin TEXT DEFAULT NULL',
+              'contact_email VARCHAR(200) DEFAULT NULL','contact_phone VARCHAR(50) DEFAULT NULL','website_url TEXT DEFAULT NULL'] as $_col) {
+        try { $db->exec("ALTER TABLE `accommodations` ADD COLUMN $_col"); } catch (PDOException $e) {}
+    }
+
+    // Tabella B2G Comuni
+    $db->exec("CREATE TABLE IF NOT EXISTS `b2g_municipalities` (
+      `id` VARCHAR(100) NOT NULL, `borough_id` VARCHAR(100) DEFAULT NULL,
+      `municipality_name` VARCHAR(300) NOT NULL, `province` VARCHAR(100) DEFAULT NULL,
+      `region` VARCHAR(100) DEFAULT 'Campania', `mayor_name` VARCHAR(200) DEFAULT NULL,
+      `mayor_email` VARCHAR(200) DEFAULT NULL, `contact_person` VARCHAR(200) DEFAULT NULL,
+      `contact_email` VARCHAR(200) DEFAULT NULL, `contact_phone` VARCHAR(50) DEFAULT NULL,
+      `pec_email` VARCHAR(200) DEFAULT NULL, `website_url` TEXT DEFAULT NULL,
+      `population` INT DEFAULT NULL, `tier` ENUM('BASE','STANDARD','PREMIUM') DEFAULT 'BASE',
+      `subscription_status` ENUM('LEAD','CONTATTATO','DEMO','ATTIVO','SOSPESO','SCADUTO') DEFAULT 'LEAD',
+      `subscription_start` DATE DEFAULT NULL, `subscription_end` DATE DEFAULT NULL,
+      `annual_fee` DECIMAL(10,2) DEFAULT NULL, `pnrr_funded` TINYINT(1) DEFAULT 0,
+      `pnrr_measure` VARCHAR(200) DEFAULT NULL, `notes` TEXT DEFAULT NULL,
+      `services_enabled` TEXT DEFAULT NULL, `cover_image` VARCHAR(500) DEFAULT NULL,
+      `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
     // Tabelle analytics
     $db->exec("CREATE TABLE IF NOT EXISTS `page_views` (
       `id` BIGINT AUTO_INCREMENT PRIMARY KEY, `entity_type` VARCHAR(50) NOT NULL,
@@ -150,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `restaurants` (
       UNIQUE KEY `uq_daily` (`stat_date`, `entity_type`, `entity_id`), INDEX `idx_date` (`stat_date`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
-    $results[] = '✅ Tabelle food_products, accommodations, restaurants, analytics — create/verificate';
+    $results[] = '✅ Tabelle food_products, accommodations, restaurants, b2g_municipalities, analytics — create/verificate';
 } catch (PDOException $e) {
     $errors[] = '❌ Schema migration: ' . $e->getMessage();
 }
@@ -412,9 +446,14 @@ seedRun($db, 'Ospitalità Masseria Santa Lucia', function(PDO $db) {
          rooms_count, max_guests, price_per_night_from, stars_or_category,
          check_in_time, check_out_time, min_stay_nights,
          amenities, accessibility, languages_spoken, cancellation_policy,
-         booking_email, booking_phone,
+         booking_email, booking_phone, booking_url,
+         main_video_url, virtual_tour_url,
+         contact_email, contact_phone, website_url,
+         social_instagram, social_facebook, social_linkedin,
+         certifications, founder_name, founder_quote,
+         tier, is_verified, b2b_open_for_contact, b2b_interests,
          is_active, is_featured)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         ON DUPLICATE KEY UPDATE
         name=VALUES(name), description_long=VALUES(description_long), updated_at=CURRENT_TIMESTAMP")
     ->execute([
@@ -432,6 +471,12 @@ seedRun($db, 'Ospitalità Masseria Santa Lucia', function(PDO $db) {
         'Italiano, English',
         'Cancellazione gratuita fino a 48 ore prima',
         'booking@caciocavalleriaded.it', '+39 0827 85012',
+        null,
+        null, null,
+        'info@caciocavalleriaded.it', '+39 0827 85012', 'https://www.caciocavalleriaded.it',
+        '#', '#', null,
+        'Agriturismo certificato', 'Paolo De Dominicis', 'Un luogo dove il tempo si ferma e la natura racconta.',
+        'PREMIUM', 1, 1, 'Gruppi turistici, Tour operator, Pacchetti esperienziali',
         1, 1,
     ]);
 }, $results, $errors);
@@ -447,12 +492,15 @@ seedRun($db, 'Ristorazione Trattoria del Borgo', function(PDO $db) {
          cuisine_type, price_range, seats_indoor, seats_outdoor,
          opening_hours, closing_day,
          specialties, menu_highlights,
-         contact_email, contact_phone,
-         social_instagram,
+         contact_email, contact_phone, website_url,
+         social_instagram, social_facebook, social_linkedin,
+         booking_url,
          accepts_groups, max_group_size,
          b2b_open_for_contact, b2b_interests,
+         certifications, founder_name, founder_quote,
+         tier, is_verified,
          is_active, is_featured)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         ON DUPLICATE KEY UPDATE
         name=VALUES(name), description_long=VALUES(description_long), updated_at=CURRENT_TIMESTAMP")
     ->execute([
@@ -468,9 +516,13 @@ seedRun($db, 'Ristorazione Trattoria del Borgo', function(PDO $db) {
         'Fusilli al ferretto con ragù di castrato, Caciocavallo Podolico alla piastra, Zuppa di legumi irpini, Dolci natalizi lacedoniesi',
         'Antipasto del pastore (salumi, formaggi, sottoli)|Fusilli al ragù di castrato|Agnello alla brace con patate|Torta di castagne',
         'info@trattoriadelborgo.it', '+39 0827 85100',
-        '@trattoriadelborgo',
+        null,
+        '@trattoriadelborgo', '#', null,
+        null,
         1, 30,
         1, 'Forniture locali, Gruppi turistici, Catering eventi',
+        'Cucina tipica irpina', 'Maria Rossi', 'La nostra cucina racconta la storia di questa terra.',
+        'BASE', 1,
         1, 1,
     ]);
 }, $results, $errors);
