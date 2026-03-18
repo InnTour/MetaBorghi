@@ -27,7 +27,7 @@ export default function HomePage() {
       <section className="mx-auto max-w-7xl px-6 py-20">
         <h2 className="text-3xl font-bold">{t('sections.borghi')}</h2>
         <p className="mt-2 text-muted-foreground">
-          25 comuni dell'Alta Irpinia — da Lacedonia a Nusco
+          25 comuni dell&apos;Alta Irpinia — da Lacedonia a Nusco
         </p>
         {/* Listing cards borghi — MVP 1 */}
       </section>

@@ -60,10 +60,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     session({ session, token }) {
       if (session.user) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const user = session.user as any
-        user.role = token.role ?? 'guest'
-        user.id = token.sub
+        Object.assign(session.user, {
+          role: token.role ?? 'guest',
+          id: token.sub,
+        })
       }
       return session
     },
