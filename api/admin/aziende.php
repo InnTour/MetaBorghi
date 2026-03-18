@@ -11,6 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $exists = $db->prepare("SELECT id FROM companies WHERE id=?");
     $exists->execute([$id]);
 
+    $coverPath = handleCoverUpload('cover_image', 'company', $id);
+
     $f = [
         'slug'               => trim($_POST['slug']               ?? $id),
         'name'               => trim($_POST['name']               ?? ''),
@@ -43,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'hero_image_index'   => (int)($_POST['hero_image_index']  ?? 0),
         'hero_image_alt'     => trim($_POST['hero_image_alt']     ?? ''),
     ];
+    if ($coverPath) $f['cover_image'] = $coverPath;
 
     if ($exists->fetch()) {
         $set = implode(',', array_map(fn($k) => "`$k`=?", array_keys($f)));
@@ -60,6 +63,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $msg = '✅ Azienda salvata.';
 }
 render:
+
+if (isset($_GET['delete'])) {
+    $did = $_GET['delete'];
+    foreach (['company_certifications','company_b2b_interests','company_awards'] as $t) {
+        $db->prepare("DELETE FROM `$t` WHERE company_id = ?")->execute([$did]);
+    }
+    $db->prepare("DELETE FROM companies WHERE id=?")->execute([$did]);
+    header('Location: aziende.php');
+    exit;
+}
 
 $list = $db->query("SELECT id, name, borough_id, tier FROM companies ORDER BY name ASC")->fetchAll();
 $sel = null;
@@ -107,8 +120,17 @@ require '_layout.php';
   <!-- Form -->
   <div class="md:col-span-2">
     <?php if ($sel !== null || isset($_GET['edit'])): ?>
-    <form method="POST" class="bg-slate-800 rounded-xl border border-slate-700 p-6 space-y-4">
+    <form method="POST" enctype="multipart/form-data" class="bg-slate-800 rounded-xl border border-slate-700 p-6 space-y-4">
       <h3 class="font-semibold text-white mb-2"><?= $sel ? 'Modifica: ' . htmlspecialchars($sel['name']) : 'Nuova azienda' ?></h3>
+      <!-- Cover Image Upload -->
+      <div>
+        <label class="block text-xs text-slate-400 mb-1">Immagine di copertina</label>
+        <?php if (!empty($sel['cover_image'])): ?>
+          <div class="mb-2"><img src="<?= htmlspecialchars($sel['cover_image']) ?>" alt="Cover" class="h-32 rounded-lg object-cover"></div>
+        <?php endif; ?>
+        <input type="file" name="cover_image" accept="image/*"
+          class="w-full bg-slate-700 text-white rounded-lg px-3 py-2 text-sm border border-slate-600 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-emerald-600 file:text-white file:text-xs file:cursor-pointer">
+      </div>
       <div class="grid grid-cols-2 gap-4">
         <?php
         $inp = fn($n,$l,$t='text',$full=false) =>
@@ -188,6 +210,11 @@ require '_layout.php';
       </div>
       <div class="flex gap-3 pt-2">
         <button type="submit" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition-colors">Salva</button>
+        <?php if ($sel): ?>
+        <a href="aziende.php?delete=<?= urlencode($sel['id']) ?>"
+           onclick="return confirm('Eliminare questa azienda?')"
+           class="px-6 py-2.5 bg-red-700 hover:bg-red-600 text-white text-sm rounded-lg transition-colors">Elimina</a>
+        <?php endif; ?>
         <a href="aziende.php" class="px-6 py-2.5 bg-slate-600 hover:bg-slate-500 text-white text-sm rounded-lg transition-colors">Annulla</a>
       </div>
     </form>

@@ -20,10 +20,13 @@ if (isset($_GET['publish'])) {
     try {
         require_once __DIR__ . '/../export/_generate_functions.php';
         $generated = [
-            'boroughs'    => generateBoroughs($db),
-            'companies'   => generateCompanies($db),
-            'experiences' => generateExperiences($db),
-            'crafts'      => generateCrafts($db),
+            'boroughs'       => generateBoroughs($db),
+            'companies'      => generateCompanies($db),
+            'experiences'    => generateExperiences($db),
+            'crafts'         => generateCrafts($db),
+            'food_products'  => generateFoodProducts($db),
+            'accommodations' => generateAccommodations($db),
+            'restaurants'    => generateRestaurants($db),
         ];
         $publishResult = ['ok' => true, 'generated' => $generated];
     } catch (Throwable $e) {
@@ -92,6 +95,7 @@ require '_layout.php';
     ['/api/admin/prodotti.php',       '🧀', 'Gestisci Prodotti Food','Formaggi, salumi, eccellenze gastronomiche'],
     ['/api/admin/ospitalita.php',     '🏨', 'Gestisci Ospitalità',   'Masserie, agriturismi, B&B'],
     ['/api/admin/ristorazione.php',   '🍽️', 'Gestisci Ristorazione', 'Ristoranti, trattorie, osterie'],
+    ['/api/admin/statistiche.php',   '📊', 'Statistiche & Analytics','Visualizzazioni, KPI e reportistica'],
     ['/api/admin/seed_lacedonia.php', '🌱', 'Seed Lacedonia',        'Popola il DB con i dati di esempio Lacedonia'],
   ] as [$url, $icon, $title, $desc]): ?>
   <a href="<?= $url ?>" class="bg-slate-800 hover:bg-slate-700 rounded-xl p-5 border border-slate-700 transition-colors group">

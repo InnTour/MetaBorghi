@@ -53,8 +53,8 @@ if ($method === 'POST') {
          social_instagram, social_facebook, booking_url,
          accepts_groups, max_group_size,
          b2b_open_for_contact, b2b_interests,
-         is_active, is_featured)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+         is_active, is_featured, cover_image)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
     ->execute(_restValues($body));
     http_response_code(201);
     echo json_encode(['ok' => true, 'id' => $body['id']]);
@@ -72,7 +72,7 @@ if ($method === 'PUT' && $id) {
         social_instagram=?, social_facebook=?, booking_url=?,
         accepts_groups=?, max_group_size=?,
         b2b_open_for_contact=?, b2b_interests=?,
-        is_active=?, is_featured=? WHERE id=?")
+        is_active=?, is_featured=?, cover_image=? WHERE id=?")
     ->execute(array_merge(array_slice(_restValues($body), 1), [$id]));
     echo json_encode(['ok' => true]);
     exit;
@@ -106,5 +106,6 @@ function _restValues(array $b): array {
         $b['accepts_groups'] ? 1 : 0, $b['max_group_size'] ?? null,
         $b['b2b_open_for_contact'] ? 1 : 0, $b['b2b_interests'] ?? null,
         $b['is_active'] ?? 1, $b['is_featured'] ?? 0,
+        $b['cover_image'] ?? null,
     ];
 }

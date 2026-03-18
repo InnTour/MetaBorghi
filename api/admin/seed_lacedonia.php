@@ -130,7 +130,27 @@ CREATE TABLE IF NOT EXISTS `restaurants` (
   PRIMARY KEY (`id`), UNIQUE KEY `slug` (`slug`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ");
-    $results[] = '✅ Tabelle food_products, accommodations, restaurants — create/verificate';
+    // Aggiungi cover_image a tutte le tabelle
+    foreach (['boroughs','companies','experiences','craft_products','food_products','accommodations','restaurants'] as $_t) {
+        try { $db->exec("ALTER TABLE `$_t` ADD COLUMN `cover_image` VARCHAR(500) DEFAULT NULL"); } catch (PDOException $e) { /* colonna già presente */ }
+    }
+
+    // Tabelle analytics
+    $db->exec("CREATE TABLE IF NOT EXISTS `page_views` (
+      `id` BIGINT AUTO_INCREMENT PRIMARY KEY, `entity_type` VARCHAR(50) NOT NULL,
+      `entity_id` VARCHAR(100) NOT NULL, `page_url` TEXT DEFAULT NULL, `referrer` TEXT DEFAULT NULL,
+      `user_agent` TEXT DEFAULT NULL, `ip_hash` VARCHAR(64) DEFAULT NULL, `session_id` VARCHAR(100) DEFAULT NULL,
+      `viewed_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      INDEX `idx_entity` (`entity_type`, `entity_id`), INDEX `idx_viewed_at` (`viewed_at`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+    $db->exec("CREATE TABLE IF NOT EXISTS `daily_stats` (
+      `id` INT AUTO_INCREMENT PRIMARY KEY, `stat_date` DATE NOT NULL,
+      `entity_type` VARCHAR(50) NOT NULL, `entity_id` VARCHAR(100) NOT NULL,
+      `views_count` INT DEFAULT 0, `unique_views` INT DEFAULT 0,
+      UNIQUE KEY `uq_daily` (`stat_date`, `entity_type`, `entity_id`), INDEX `idx_date` (`stat_date`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
+    $results[] = '✅ Tabelle food_products, accommodations, restaurants, analytics — create/verificate';
 } catch (PDOException $e) {
     $errors[] = '❌ Schema migration: ' . $e->getMessage();
 }

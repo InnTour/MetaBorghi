@@ -11,6 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $exists = $db->prepare("SELECT id FROM accommodations WHERE id=?");
     $exists->execute([$id]);
 
+    $coverPath = handleCoverUpload('cover_image', 'accommodation', $id);
+
     $f = [
         'slug'                 => trim($_POST['slug']                 ?? $id),
         'name'                 => trim($_POST['name']                 ?? ''),
@@ -43,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'is_active'            => isset($_POST['is_active'])    ? 1 : 0,
         'is_featured'          => isset($_POST['is_featured'])  ? 1 : 0,
     ];
+    if ($coverPath) $f['cover_image'] = $coverPath;
 
     if ($exists->fetch()) {
         $set = implode(',', array_map(fn($k) => "`$k`=?", array_keys($f)));
@@ -116,8 +119,17 @@ require '_layout.php';
   <!-- Form -->
   <div class="md:col-span-2">
     <?php if ($sel !== null || isset($_GET['edit'])): ?>
-    <form method="POST" class="bg-slate-800 rounded-xl border border-slate-700 p-6 space-y-4">
+    <form method="POST" enctype="multipart/form-data" class="bg-slate-800 rounded-xl border border-slate-700 p-6 space-y-4">
       <h3 class="font-semibold text-white mb-2"><?= $sel ? 'Modifica: ' . htmlspecialchars($sel['name']) : 'Nuova struttura' ?></h3>
+      <!-- Cover Image Upload -->
+      <div>
+        <label class="block text-xs text-slate-400 mb-1">Immagine di copertina</label>
+        <?php if (!empty($sel['cover_image'])): ?>
+          <div class="mb-2"><img src="<?= htmlspecialchars($sel['cover_image']) ?>" alt="Cover" class="h-32 rounded-lg object-cover"></div>
+        <?php endif; ?>
+        <input type="file" name="cover_image" accept="image/*"
+          class="w-full bg-slate-700 text-white rounded-lg px-3 py-2 text-sm border border-slate-600 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-emerald-600 file:text-white file:text-xs file:cursor-pointer">
+      </div>
       <div class="grid grid-cols-2 gap-4">
         <?php
         $inp = fn($n,$l,$t='text',$full=false) =>

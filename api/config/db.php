@@ -108,6 +108,28 @@ function fetchArray(PDO $db, string $table, string $fk, string $id, string $col 
     return array_column($stmt->fetchAll(), $col);
 }
 
+// Upload immagine di copertina — restituisce il path relativo o null
+function handleCoverUpload(string $inputName, string $entityType, string $entityId): ?string {
+    if (empty($_FILES[$inputName]['tmp_name']) || $_FILES[$inputName]['error'] !== UPLOAD_ERR_OK) {
+        return null;
+    }
+    $allowed = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/gif' => 'gif', 'image/webp' => 'webp'];
+    $finfo = new finfo(FILEINFO_MIME_TYPE);
+    $mime  = $finfo->file($_FILES[$inputName]['tmp_name']);
+    if (!isset($allowed[$mime])) return null;
+
+    $ext      = $allowed[$mime];
+    $filename = $entityType . '_' . preg_replace('/[^a-z0-9_-]/', '', $entityId) . '_' . time() . '.' . $ext;
+    $destDir  = __DIR__ . '/../uploads/';
+    if (!is_dir($destDir)) mkdir($destDir, 0755, true);
+    $dest = $destDir . $filename;
+
+    if (move_uploaded_file($_FILES[$inputName]['tmp_name'], $dest)) {
+        return '/api/uploads/' . $filename;
+    }
+    return null;
+}
+
 // Sostituisce array 1-to-many
 function replaceArray(PDO $db, string $table, string $fk, string $id, array $values, string $col = 'value'): void {
     $db->prepare("DELETE FROM `$table` WHERE `$fk` = ?")->execute([$id]);

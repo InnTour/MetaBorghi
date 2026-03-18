@@ -54,8 +54,8 @@ if ($method === 'POST') {
          price, unit, weight_grams, shelf_life_days, storage_instructions,
          origin_protected, allergens, ingredients,
          stock_qty, min_order_qty, is_shippable, shipping_notes,
-         is_active, is_featured)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+         is_active, is_featured, cover_image)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
     ->execute(_foodValues($body));
     http_response_code(201);
     echo json_encode(['ok' => true, 'id' => $body['id']]);
@@ -69,7 +69,7 @@ if ($method === 'PUT' && $id) {
         price=?, unit=?, weight_grams=?, shelf_life_days=?, storage_instructions=?,
         origin_protected=?, allergens=?, ingredients=?,
         stock_qty=?, min_order_qty=?, is_shippable=?, shipping_notes=?,
-        is_active=?, is_featured=? WHERE id=?")
+        is_active=?, is_featured=?, cover_image=? WHERE id=?")
     ->execute(array_merge(array_slice(_foodValues($body), 1), [$id]));
     echo json_encode(['ok' => true]);
     exit;
@@ -99,5 +99,6 @@ function _foodValues(array $b): array {
         $b['stock_qty'] ?? 0, $b['min_order_qty'] ?? 1,
         $b['is_shippable'] ? 1 : 0, $b['shipping_notes'] ?? null,
         $b['is_active'] ?? 1, $b['is_featured'] ?? 0,
+        $b['cover_image'] ?? null,
     ];
 }

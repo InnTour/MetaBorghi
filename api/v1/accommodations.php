@@ -51,8 +51,8 @@ if ($method === 'POST') {
          check_in_time, check_out_time, min_stay_nights,
          amenities, accessibility, languages_spoken, cancellation_policy,
          booking_email, booking_phone, booking_url,
-         main_video_url, virtual_tour_url, is_active, is_featured)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+         main_video_url, virtual_tour_url, is_active, is_featured, cover_image)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
     ->execute(_accValues($body));
     http_response_code(201);
     echo json_encode(['ok' => true, 'id' => $body['id']]);
@@ -68,7 +68,7 @@ if ($method === 'PUT' && $id) {
         check_in_time=?, check_out_time=?, min_stay_nights=?,
         amenities=?, accessibility=?, languages_spoken=?, cancellation_policy=?,
         booking_email=?, booking_phone=?, booking_url=?,
-        main_video_url=?, virtual_tour_url=?, is_active=?, is_featured=? WHERE id=?")
+        main_video_url=?, virtual_tour_url=?, is_active=?, is_featured=?, cover_image=? WHERE id=?")
     ->execute(array_merge(array_slice(_accValues($body), 1), [$id]));
     echo json_encode(['ok' => true]);
     exit;
@@ -103,5 +103,6 @@ function _accValues(array $b): array {
         $b['booking_url'] ?? null,
         $b['main_video_url'] ?? null, $b['virtual_tour_url'] ?? null,
         $b['is_active'] ?? 1, $b['is_featured'] ?? 0,
+        $b['cover_image'] ?? null,
     ];
 }

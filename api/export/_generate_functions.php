@@ -187,6 +187,105 @@ function generateCrafts(PDO $db): string {
 }
 
 // ============================================================
+// FOOD PRODUCTS → assets/food-products-data.js
+// ============================================================
+function generateFoodProducts(PDO $db): string {
+    $rows = $db->query("SELECT * FROM food_products WHERE is_active = 1 ORDER BY name ASC")->fetchAll();
+    $items = [];
+    foreach ($rows as $row) {
+        $obj  = '{id:' . jsStr($row['id']) . ',slug:' . jsStr($row['slug']) . ',name:' . jsStr($row['name'] ?? '') . ',';
+        $obj .= 'producer_id:' . jsStr($row['producer_id'] ?? '') . ',borough_id:' . jsStr($row['borough_id'] ?? '') . ',';
+        $obj .= 'category:' . jsStr($row['category'] ?? '') . ',';
+        $obj .= 'description_short:' . jsStr($row['description_short'] ?? '') . ',description_long:' . jsStr($row['description_long'] ?? '') . ',';
+        $obj .= 'tagline:' . jsStr($row['tagline'] ?? '') . ',pairing_suggestions:' . jsStr($row['pairing_suggestions'] ?? '') . ',';
+        $obj .= 'price:' . (float)($row['price'] ?? 0) . ',unit:' . jsStr($row['unit'] ?? '') . ',';
+        $obj .= 'weight_grams:' . (int)($row['weight_grams'] ?? 0) . ',shelf_life_days:' . (int)($row['shelf_life_days'] ?? 0) . ',';
+        $obj .= 'storage_instructions:' . jsStr($row['storage_instructions'] ?? '') . ',';
+        $obj .= 'origin_protected:' . jsStr($row['origin_protected'] ?? '') . ',allergens:' . jsStr($row['allergens'] ?? '') . ',';
+        $obj .= 'ingredients:' . jsStr($row['ingredients'] ?? '') . ',';
+        $obj .= 'stock_qty:' . (int)($row['stock_qty'] ?? 0) . ',min_order_qty:' . (int)($row['min_order_qty'] ?? 1) . ',';
+        $obj .= 'is_shippable:' . ($row['is_shippable'] ? '!0' : '!1') . ',shipping_notes:' . jsStr($row['shipping_notes'] ?? '') . ',';
+        $obj .= 'cover_image:' . jsStr($row['cover_image'] ?? '') . ',';
+        $obj .= 'is_active:!0,is_featured:' . ($row['is_featured'] ? '!0' : '!1') . '}';
+        $items[] = $obj;
+    }
+    $content = 'const f=[' . implode(',', $items) . '];'
+             . 'function g(a){return f.find(e=>e.slug===a)}'
+             . 'function c(a){return f.filter(e=>e.category===a)}'
+             . 'function p(a){return f.filter(e=>e.producer_id===a)}'
+             . 'export{f,g,c,p};';
+    return writeAsset('food-products-data.js', $content);
+}
+
+// ============================================================
+// ACCOMMODATIONS → assets/accommodations-data.js
+// ============================================================
+function generateAccommodations(PDO $db): string {
+    $rows = $db->query("SELECT * FROM accommodations WHERE is_active = 1 ORDER BY name ASC")->fetchAll();
+    $items = [];
+    foreach ($rows as $row) {
+        $obj  = '{id:' . jsStr($row['id']) . ',slug:' . jsStr($row['slug']) . ',name:' . jsStr($row['name'] ?? '') . ',';
+        $obj .= 'type:' . jsStr($row['type'] ?? 'AGRITURISMO') . ',';
+        $obj .= 'provider_id:' . jsStr($row['provider_id'] ?? '') . ',borough_id:' . jsStr($row['borough_id'] ?? '') . ',';
+        $obj .= 'address_full:' . jsStr($row['address_full'] ?? '') . ',';
+        $obj .= 'coordinates:{lat:' . (float)($row['lat'] ?? 0) . ',lng:' . (float)($row['lng'] ?? 0) . '},';
+        $obj .= 'distance_center_km:' . (float)($row['distance_center_km'] ?? 0) . ',';
+        $obj .= 'description_short:' . jsStr($row['description_short'] ?? '') . ',description_long:' . jsStr($row['description_long'] ?? '') . ',';
+        $obj .= 'tagline:' . jsStr($row['tagline'] ?? '') . ',';
+        $obj .= 'rooms_count:' . (int)($row['rooms_count'] ?? 0) . ',max_guests:' . (int)($row['max_guests'] ?? 0) . ',';
+        $obj .= 'price_per_night_from:' . (float)($row['price_per_night_from'] ?? 0) . ',';
+        $obj .= 'stars_or_category:' . jsStr($row['stars_or_category'] ?? '') . ',';
+        $obj .= 'check_in_time:' . jsStr($row['check_in_time'] ?? '') . ',check_out_time:' . jsStr($row['check_out_time'] ?? '') . ',';
+        $obj .= 'min_stay_nights:' . (int)($row['min_stay_nights'] ?? 1) . ',';
+        $obj .= 'amenities:' . jsStr($row['amenities'] ?? '') . ',accessibility:' . jsStr($row['accessibility'] ?? '') . ',';
+        $obj .= 'languages_spoken:' . jsStr($row['languages_spoken'] ?? '') . ',cancellation_policy:' . jsStr($row['cancellation_policy'] ?? '') . ',';
+        $obj .= 'booking_email:' . jsStr($row['booking_email'] ?? '') . ',booking_phone:' . jsStr($row['booking_phone'] ?? '') . ',';
+        $obj .= 'booking_url:' . jsStr($row['booking_url'] ?? '') . ',';
+        $obj .= 'cover_image:' . jsStr($row['cover_image'] ?? '') . ',';
+        $obj .= 'is_active:!0,is_featured:' . ($row['is_featured'] ? '!0' : '!1') . '}';
+        $items[] = $obj;
+    }
+    $content = 'const a=[' . implode(',', $items) . '];'
+             . 'function g(s){return a.find(e=>e.slug===s)}'
+             . 'function t(s){return a.filter(e=>e.type===s)}'
+             . 'export{a,g,t};';
+    return writeAsset('accommodations-data.js', $content);
+}
+
+// ============================================================
+// RESTAURANTS → assets/restaurants-data.js
+// ============================================================
+function generateRestaurants(PDO $db): string {
+    $rows = $db->query("SELECT * FROM restaurants WHERE is_active = 1 ORDER BY name ASC")->fetchAll();
+    $items = [];
+    foreach ($rows as $row) {
+        $obj  = '{id:' . jsStr($row['id']) . ',slug:' . jsStr($row['slug']) . ',name:' . jsStr($row['name'] ?? '') . ',';
+        $obj .= 'type:' . jsStr($row['type'] ?? 'RISTORANTE') . ',borough_id:' . jsStr($row['borough_id'] ?? '') . ',';
+        $obj .= 'address_full:' . jsStr($row['address_full'] ?? '') . ',';
+        $obj .= 'coordinates:{lat:' . (float)($row['lat'] ?? 0) . ',lng:' . (float)($row['lng'] ?? 0) . '},';
+        $obj .= 'description_short:' . jsStr($row['description_short'] ?? '') . ',description_long:' . jsStr($row['description_long'] ?? '') . ',';
+        $obj .= 'tagline:' . jsStr($row['tagline'] ?? '') . ',';
+        $obj .= 'cuisine_type:' . jsStr($row['cuisine_type'] ?? '') . ',price_range:' . jsStr($row['price_range'] ?? 'MEDIO') . ',';
+        $obj .= 'seats_indoor:' . (int)($row['seats_indoor'] ?? 0) . ',seats_outdoor:' . (int)($row['seats_outdoor'] ?? 0) . ',';
+        $obj .= 'opening_hours:' . jsStr($row['opening_hours'] ?? '') . ',closing_day:' . jsStr($row['closing_day'] ?? '') . ',';
+        $obj .= 'specialties:' . jsStr($row['specialties'] ?? '') . ',menu_highlights:' . jsStr($row['menu_highlights'] ?? '') . ',';
+        $obj .= 'contact_email:' . jsStr($row['contact_email'] ?? '') . ',contact_phone:' . jsStr($row['contact_phone'] ?? '') . ',';
+        $obj .= 'website_url:' . jsStr($row['website_url'] ?? '') . ',';
+        $obj .= 'social_instagram:' . jsStr($row['social_instagram'] ?? '') . ',social_facebook:' . jsStr($row['social_facebook'] ?? '') . ',';
+        $obj .= 'booking_url:' . jsStr($row['booking_url'] ?? '') . ',';
+        $obj .= 'accepts_groups:' . ($row['accepts_groups'] ? '!0' : '!1') . ',max_group_size:' . (int)($row['max_group_size'] ?? 0) . ',';
+        $obj .= 'cover_image:' . jsStr($row['cover_image'] ?? '') . ',';
+        $obj .= 'is_active:!0,is_featured:' . ($row['is_featured'] ? '!0' : '!1') . '}';
+        $items[] = $obj;
+    }
+    $content = 'const r=[' . implode(',', $items) . '];'
+             . 'function g(s){return r.find(e=>e.slug===s)}'
+             . 'function t(s){return r.filter(e=>e.type===s)}'
+             . 'export{r,g,t};';
+    return writeAsset('restaurants-data.js', $content);
+}
+
+// ============================================================
 // Helpers
 // ============================================================
 function writeAsset(string $filename, string $content): string {

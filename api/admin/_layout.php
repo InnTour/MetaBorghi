@@ -50,6 +50,11 @@
         <a href="/api/admin/ristorazione.php" class="nav-link <?= ($pageTitle==='Ristorazione'?'active':'') ?>">
           <span>🍽️</span> Ristorazione
         </a>
+        <div class="border-t border-slate-700 mt-3 pt-3">
+          <a href="/api/admin/statistiche.php" class="nav-link <?= ($pageTitle==='Statistiche'?'active':'') ?>">
+            <span>📊</span> Statistiche
+          </a>
+        </div>
       </nav>
       <div class="px-3 py-4 border-t border-slate-700">
         <a href="/api/admin/logout.php" class="nav-link text-red-400 hover:text-red-300 hover:bg-red-900/20">
