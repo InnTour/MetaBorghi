@@ -145,8 +145,8 @@ function replaceAwards(PDO $db, string $cid, array $awards): void {
 
 function replaceLangs(PDO $db, string $eid, array $langs): void {
     $db->prepare("DELETE FROM experience_languages WHERE experience_id=?")->execute([$eid]);
-    $stmt = $db->prepare("INSERT INTO experience_languages (experience_id, lang) VALUES (?,?)");
-    foreach ($langs as $l) { $stmt->execute([$eid, $l]); }
+    $stmt = $db->prepare("INSERT INTO experience_languages (experience_id, lang, sort_order) VALUES (?,?,?)");
+    foreach ($langs as $i => $l) { $stmt->execute([$eid, $l, $i]); }
 }
 
 function replaceTimeline(PDO $db, string $eid, array $steps): void {
