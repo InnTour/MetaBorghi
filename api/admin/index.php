@@ -10,7 +10,7 @@ $counts = [
     'artigianato' => $db->query("SELECT COUNT(*) FROM craft_products")->fetchColumn(),
 ];
 // Nuove tabelle (potrebbero non esistere ancora — gestisci con try/catch)
-foreach (['prodotti' => 'food_products', 'ospitalita' => 'accommodations', 'ristorazione' => 'restaurants'] as $k => $t) {
+foreach (['prodotti' => 'food_products', 'ospitalita' => 'accommodations', 'ristorazione' => 'restaurants', 'comuni' => 'b2g_municipalities'] as $k => $t) {
     try { $counts[$k] = $db->query("SELECT COUNT(*) FROM `$t`")->fetchColumn(); }
     catch (PDOException $e) { $counts[$k] = '–'; }
 }
@@ -63,6 +63,7 @@ require '_layout.php';
     ['prodotti', '🧀', 'Prodotti Food'],
     ['ospitalita', '🏨', 'Ospitalità'],
     ['ristorazione', '🍽️', 'Ristorazione'],
+    ['comuni', '🏛️', 'Comuni B2G'],
   ] as [$key, $icon, $label]): ?>
   <div class="bg-slate-800 rounded-xl p-5 border border-slate-700">
     <div class="text-2xl mb-2"><?= $icon ?></div>
@@ -95,6 +96,7 @@ require '_layout.php';
     ['/api/admin/prodotti.php',       '🧀', 'Gestisci Prodotti Food','Formaggi, salumi, eccellenze gastronomiche'],
     ['/api/admin/ospitalita.php',     '🏨', 'Gestisci Ospitalità',   'Masserie, agriturismi, B&B'],
     ['/api/admin/ristorazione.php',   '🍽️', 'Gestisci Ristorazione', 'Ristoranti, trattorie, osterie'],
+    ['/api/admin/comuni.php',        '🏛️', 'Gestisci Comuni B2G',   'Programma abbonamenti Pubbliche Amministrazioni'],
     ['/api/admin/statistiche.php',   '📊', 'Statistiche & Analytics','Visualizzazioni, KPI e reportistica'],
     ['/api/admin/seed_lacedonia.php', '🌱', 'Seed Lacedonia',        'Popola il DB con i dati di esempio Lacedonia'],
   ] as [$url, $icon, $title, $desc]): ?>

@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $exists->execute([$id]);
 
     $coverPath = handleCoverUpload('cover_image', 'accommodation', $id);
+    if ($coverPath) ensureCoverImageColumn($db, 'accommodations');
 
     $f = [
         'slug'                 => trim($_POST['slug']                 ?? $id),
@@ -42,6 +43,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'booking_url'          => trim($_POST['booking_url']          ?? ''),
         'main_video_url'       => trim($_POST['main_video_url']       ?? ''),
         'virtual_tour_url'     => trim($_POST['virtual_tour_url']     ?? ''),
+        'contact_email'        => trim($_POST['contact_email']        ?? ''),
+        'contact_phone'        => trim($_POST['contact_phone']        ?? ''),
+        'website_url'          => trim($_POST['website_url']          ?? ''),
+        'social_instagram'     => trim($_POST['social_instagram']     ?? ''),
+        'social_facebook'      => trim($_POST['social_facebook']      ?? ''),
+        'social_linkedin'      => trim($_POST['social_linkedin']      ?? ''),
+        'certifications'       => trim($_POST['certifications']       ?? ''),
+        'founder_name'         => trim($_POST['founder_name']         ?? ''),
+        'founder_quote'        => trim($_POST['founder_quote']        ?? ''),
+        'tier'                 => $_POST['tier']                      ?? 'BASE',
+        'is_verified'          => isset($_POST['is_verified'])        ? 1 : 0,
+        'b2b_open_for_contact' => isset($_POST['b2b_open_for_contact']) ? 1 : 0,
+        'b2b_interests'        => trim($_POST['b2b_interests']        ?? ''),
         'is_active'            => isset($_POST['is_active'])    ? 1 : 0,
         'is_featured'          => isset($_POST['is_featured'])  ? 1 : 0,
     ];
@@ -155,6 +169,13 @@ require '_layout.php';
         echo $inp('check_out_time','Check-out');
         echo $inp('min_stay_nights','Soggiorno minimo notti','number');
         echo $inp('languages_spoken','Lingue parlate');
+        echo $inp('contact_email','Email contatto','email');
+        echo $inp('contact_phone','Telefono contatto');
+        echo $inp('website_url','Sito web','url',true);
+        echo $inp('social_instagram','Instagram');
+        echo $inp('social_facebook','Facebook');
+        echo $inp('social_linkedin','LinkedIn');
+        echo $inp('founder_name','Fondatore');
         echo $inp('booking_email','Email prenotazioni','email');
         echo $inp('booking_phone','Telefono prenotazioni');
         echo $inp('booking_url','URL prenotazione','url',true);
@@ -169,6 +190,14 @@ require '_layout.php';
             <?php endforeach; ?>
           </select>
         </div>
+        <div>
+          <label class="block text-xs text-slate-400 mb-1">Tier</label>
+          <select name="tier" class="w-full bg-slate-700 text-white rounded-lg px-3 py-2 text-sm border border-slate-600 focus:outline-none focus:border-emerald-500">
+            <?php foreach (['BASE','PREMIUM','PLATINUM'] as $t): ?>
+            <option value="<?= $t ?>" <?= ($sel['tier']??'')===$t?'selected':'' ?>><?= $t ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
       </div>
       <?php foreach ([
         ['tagline','Tagline'],
@@ -177,6 +206,9 @@ require '_layout.php';
         ['amenities','Servizi (uno per riga)'],
         ['accessibility','Accessibilità'],
         ['cancellation_policy','Politica cancellazione'],
+        ['founder_quote','Citazione fondatore'],
+        ['certifications','Certificazioni (una per riga)'],
+        ['b2b_interests','Interessi B2B (uno per riga)'],
       ] as [$n,$l]): ?>
       <div>
         <label class="block text-xs text-slate-400 mb-1"><?= $l ?></label>
@@ -185,7 +217,7 @@ require '_layout.php';
       </div>
       <?php endforeach; ?>
       <div class="flex gap-4 flex-wrap text-sm">
-        <?php foreach ([['is_active','Attiva'],['is_featured','In evidenza']] as [$n,$l]): ?>
+        <?php foreach ([['is_verified','Verificata'],['is_active','Attiva'],['is_featured','In evidenza'],['b2b_open_for_contact','Aperta B2B']] as [$n,$l]): ?>
         <label class="flex items-center gap-2 text-slate-300">
           <input type="checkbox" name="<?= $n ?>" <?= !empty($sel[$n])?'checked':'' ?> class="rounded">
           <?= $l ?>

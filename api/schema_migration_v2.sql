@@ -41,3 +41,59 @@ CREATE TABLE IF NOT EXISTS `daily_stats` (
   UNIQUE KEY `uq_daily` (`stat_date`, `entity_type`, `entity_id`),
   INDEX `idx_date` (`stat_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- B2B FIELDS per RISTORAZIONE e OSPITALITA
+-- ------------------------------------------------------------
+ALTER TABLE `restaurants` ADD COLUMN IF NOT EXISTS `certifications` TEXT DEFAULT NULL;
+ALTER TABLE `restaurants` ADD COLUMN IF NOT EXISTS `founder_name` VARCHAR(200) DEFAULT NULL;
+ALTER TABLE `restaurants` ADD COLUMN IF NOT EXISTS `founder_quote` TEXT DEFAULT NULL;
+ALTER TABLE `restaurants` ADD COLUMN IF NOT EXISTS `tier` ENUM('BASE','PREMIUM','PLATINUM') DEFAULT 'BASE';
+ALTER TABLE `restaurants` ADD COLUMN IF NOT EXISTS `is_verified` TINYINT(1) DEFAULT 0;
+ALTER TABLE `restaurants` ADD COLUMN IF NOT EXISTS `social_linkedin` TEXT DEFAULT NULL;
+
+ALTER TABLE `accommodations` ADD COLUMN IF NOT EXISTS `certifications` TEXT DEFAULT NULL;
+ALTER TABLE `accommodations` ADD COLUMN IF NOT EXISTS `founder_name` VARCHAR(200) DEFAULT NULL;
+ALTER TABLE `accommodations` ADD COLUMN IF NOT EXISTS `founder_quote` TEXT DEFAULT NULL;
+ALTER TABLE `accommodations` ADD COLUMN IF NOT EXISTS `tier` ENUM('BASE','PREMIUM','PLATINUM') DEFAULT 'BASE';
+ALTER TABLE `accommodations` ADD COLUMN IF NOT EXISTS `is_verified` TINYINT(1) DEFAULT 0;
+ALTER TABLE `accommodations` ADD COLUMN IF NOT EXISTS `b2b_open_for_contact` TINYINT(1) DEFAULT 0;
+ALTER TABLE `accommodations` ADD COLUMN IF NOT EXISTS `b2b_interests` TEXT DEFAULT NULL;
+ALTER TABLE `accommodations` ADD COLUMN IF NOT EXISTS `social_instagram` TEXT DEFAULT NULL;
+ALTER TABLE `accommodations` ADD COLUMN IF NOT EXISTS `social_facebook` TEXT DEFAULT NULL;
+ALTER TABLE `accommodations` ADD COLUMN IF NOT EXISTS `social_linkedin` TEXT DEFAULT NULL;
+ALTER TABLE `accommodations` ADD COLUMN IF NOT EXISTS `contact_email` VARCHAR(200) DEFAULT NULL;
+ALTER TABLE `accommodations` ADD COLUMN IF NOT EXISTS `contact_phone` VARCHAR(50) DEFAULT NULL;
+ALTER TABLE `accommodations` ADD COLUMN IF NOT EXISTS `website_url` TEXT DEFAULT NULL;
+
+-- ------------------------------------------------------------
+-- COMUNI B2G — Programma per Pubbliche Amministrazioni
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `b2g_municipalities` (
+  `id`                   VARCHAR(100)   NOT NULL,
+  `borough_id`           VARCHAR(100)   DEFAULT NULL COMMENT 'collegamento a boroughs',
+  `municipality_name`    VARCHAR(300)   NOT NULL,
+  `province`             VARCHAR(100)   DEFAULT NULL,
+  `region`               VARCHAR(100)   DEFAULT 'Campania',
+  `mayor_name`           VARCHAR(200)   DEFAULT NULL,
+  `mayor_email`          VARCHAR(200)   DEFAULT NULL,
+  `contact_person`       VARCHAR(200)   DEFAULT NULL,
+  `contact_email`        VARCHAR(200)   DEFAULT NULL,
+  `contact_phone`        VARCHAR(50)    DEFAULT NULL,
+  `pec_email`            VARCHAR(200)   DEFAULT NULL,
+  `website_url`          TEXT           DEFAULT NULL,
+  `population`           INT            DEFAULT NULL,
+  `tier`                 ENUM('BASE','STANDARD','PREMIUM') DEFAULT 'BASE',
+  `subscription_status`  ENUM('LEAD','CONTATTATO','DEMO','ATTIVO','SOSPESO','SCADUTO') DEFAULT 'LEAD',
+  `subscription_start`   DATE           DEFAULT NULL,
+  `subscription_end`     DATE           DEFAULT NULL,
+  `annual_fee`           DECIMAL(10,2)  DEFAULT NULL,
+  `pnrr_funded`          TINYINT(1)     DEFAULT 0,
+  `pnrr_measure`         VARCHAR(200)   DEFAULT NULL,
+  `notes`                TEXT           DEFAULT NULL,
+  `services_enabled`     TEXT           DEFAULT NULL COMMENT 'JSON lista servizi attivi',
+  `cover_image`          VARCHAR(500)   DEFAULT NULL,
+  `created_at`           TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`           TIMESTAMP      DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

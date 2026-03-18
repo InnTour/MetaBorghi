@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $exists->execute([$id]);
 
     $coverPath = handleCoverUpload('cover_image', 'restaurant', $id);
+    if ($coverPath) ensureCoverImageColumn($db, 'restaurants');
 
     $f = [
         'slug'                 => trim($_POST['slug']                 ?? $id),
@@ -37,9 +38,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'website_url'          => trim($_POST['website_url']          ?? ''),
         'social_instagram'     => trim($_POST['social_instagram']     ?? ''),
         'social_facebook'      => trim($_POST['social_facebook']      ?? ''),
+        'social_linkedin'      => trim($_POST['social_linkedin']      ?? ''),
         'booking_url'          => trim($_POST['booking_url']          ?? ''),
         'accepts_groups'       => isset($_POST['accepts_groups'])  ? 1 : 0,
         'max_group_size'       => (int)($_POST['max_group_size']      ?? 0),
+        'certifications'       => trim($_POST['certifications']       ?? ''),
+        'founder_name'         => trim($_POST['founder_name']         ?? ''),
+        'founder_quote'        => trim($_POST['founder_quote']        ?? ''),
+        'tier'                 => $_POST['tier']                      ?? 'BASE',
+        'is_verified'          => isset($_POST['is_verified'])        ? 1 : 0,
         'b2b_open_for_contact' => isset($_POST['b2b_open_for_contact']) ? 1 : 0,
         'b2b_interests'        => trim($_POST['b2b_interests']        ?? ''),
         'is_active'            => isset($_POST['is_active'])    ? 1 : 0,
@@ -155,9 +162,10 @@ require '_layout.php';
         echo $inp('website_url','Sito web','url',true);
         echo $inp('social_instagram','Instagram');
         echo $inp('social_facebook','Facebook');
+        echo $inp('social_linkedin','LinkedIn');
+        echo $inp('founder_name','Fondatore');
         echo $inp('booking_url','URL prenotazione','url',true);
         echo $inp('max_group_size','Max persone gruppo','number');
-        echo $inp('b2b_interests','Interessi B2B');
         ?>
         <div>
           <label class="block text-xs text-slate-400 mb-1">Tipo</label>
@@ -175,6 +183,14 @@ require '_layout.php';
             <?php endforeach; ?>
           </select>
         </div>
+        <div>
+          <label class="block text-xs text-slate-400 mb-1">Tier</label>
+          <select name="tier" class="w-full bg-slate-700 text-white rounded-lg px-3 py-2 text-sm border border-slate-600 focus:outline-none focus:border-emerald-500">
+            <?php foreach (['BASE','PREMIUM','PLATINUM'] as $t): ?>
+            <option value="<?= $t ?>" <?= ($sel['tier']??'')===$t?'selected':'' ?>><?= $t ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
       </div>
       <?php foreach ([
         ['tagline','Tagline'],
@@ -182,6 +198,9 @@ require '_layout.php';
         ['description_long','Descrizione completa'],
         ['specialties','Specialità (separate da virgola)'],
         ['menu_highlights','Menu highlights (separati da |)'],
+        ['founder_quote','Citazione fondatore'],
+        ['certifications','Certificazioni (una per riga)'],
+        ['b2b_interests','Interessi B2B (uno per riga)'],
       ] as [$n,$l]): ?>
       <div>
         <label class="block text-xs text-slate-400 mb-1"><?= $l ?></label>
@@ -190,7 +209,7 @@ require '_layout.php';
       </div>
       <?php endforeach; ?>
       <div class="flex gap-4 flex-wrap text-sm">
-        <?php foreach ([['accepts_groups','Accetta gruppi'],['b2b_open_for_contact','Aperta B2B'],['is_active','Attivo'],['is_featured','In evidenza']] as [$n,$l]): ?>
+        <?php foreach ([['accepts_groups','Accetta gruppi'],['is_verified','Verificato'],['b2b_open_for_contact','Aperto B2B'],['is_active','Attivo'],['is_featured','In evidenza']] as [$n,$l]): ?>
         <label class="flex items-center gap-2 text-slate-300">
           <input type="checkbox" name="<?= $n ?>" <?= !empty($sel[$n])?'checked':'' ?> class="rounded">
           <?= $l ?>

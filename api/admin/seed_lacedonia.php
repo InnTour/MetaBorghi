@@ -135,6 +135,40 @@ CREATE TABLE IF NOT EXISTS `restaurants` (
         try { $db->exec("ALTER TABLE `$_t` ADD COLUMN `cover_image` VARCHAR(500) DEFAULT NULL"); } catch (PDOException $e) { /* colonna già presente */ }
     }
 
+    // B2B columns per restaurants
+    foreach (['certifications TEXT DEFAULT NULL','founder_name VARCHAR(200) DEFAULT NULL','founder_quote TEXT DEFAULT NULL',
+              "tier ENUM('BASE','PREMIUM','PLATINUM') DEFAULT 'BASE'",'is_verified TINYINT(1) DEFAULT 0','social_linkedin TEXT DEFAULT NULL'] as $_col) {
+        try { $db->exec("ALTER TABLE `restaurants` ADD COLUMN $_col"); } catch (PDOException $e) {}
+    }
+
+    // B2B columns per accommodations
+    foreach (['certifications TEXT DEFAULT NULL','founder_name VARCHAR(200) DEFAULT NULL','founder_quote TEXT DEFAULT NULL',
+              "tier ENUM('BASE','PREMIUM','PLATINUM') DEFAULT 'BASE'",'is_verified TINYINT(1) DEFAULT 0',
+              'b2b_open_for_contact TINYINT(1) DEFAULT 0','b2b_interests TEXT DEFAULT NULL',
+              'social_instagram TEXT DEFAULT NULL','social_facebook TEXT DEFAULT NULL','social_linkedin TEXT DEFAULT NULL',
+              'contact_email VARCHAR(200) DEFAULT NULL','contact_phone VARCHAR(50) DEFAULT NULL','website_url TEXT DEFAULT NULL'] as $_col) {
+        try { $db->exec("ALTER TABLE `accommodations` ADD COLUMN $_col"); } catch (PDOException $e) {}
+    }
+
+    // Tabella B2G Comuni
+    $db->exec("CREATE TABLE IF NOT EXISTS `b2g_municipalities` (
+      `id` VARCHAR(100) NOT NULL, `borough_id` VARCHAR(100) DEFAULT NULL,
+      `municipality_name` VARCHAR(300) NOT NULL, `province` VARCHAR(100) DEFAULT NULL,
+      `region` VARCHAR(100) DEFAULT 'Campania', `mayor_name` VARCHAR(200) DEFAULT NULL,
+      `mayor_email` VARCHAR(200) DEFAULT NULL, `contact_person` VARCHAR(200) DEFAULT NULL,
+      `contact_email` VARCHAR(200) DEFAULT NULL, `contact_phone` VARCHAR(50) DEFAULT NULL,
+      `pec_email` VARCHAR(200) DEFAULT NULL, `website_url` TEXT DEFAULT NULL,
+      `population` INT DEFAULT NULL, `tier` ENUM('BASE','STANDARD','PREMIUM') DEFAULT 'BASE',
+      `subscription_status` ENUM('LEAD','CONTATTATO','DEMO','ATTIVO','SOSPESO','SCADUTO') DEFAULT 'LEAD',
+      `subscription_start` DATE DEFAULT NULL, `subscription_end` DATE DEFAULT NULL,
+      `annual_fee` DECIMAL(10,2) DEFAULT NULL, `pnrr_funded` TINYINT(1) DEFAULT 0,
+      `pnrr_measure` VARCHAR(200) DEFAULT NULL, `notes` TEXT DEFAULT NULL,
+      `services_enabled` TEXT DEFAULT NULL, `cover_image` VARCHAR(500) DEFAULT NULL,
+      `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
     // Tabelle analytics
     $db->exec("CREATE TABLE IF NOT EXISTS `page_views` (
       `id` BIGINT AUTO_INCREMENT PRIMARY KEY, `entity_type` VARCHAR(50) NOT NULL,
@@ -150,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `restaurants` (
       UNIQUE KEY `uq_daily` (`stat_date`, `entity_type`, `entity_id`), INDEX `idx_date` (`stat_date`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
-    $results[] = '✅ Tabelle food_products, accommodations, restaurants, analytics — create/verificate';
+    $results[] = '✅ Tabelle food_products, accommodations, restaurants, b2g_municipalities, analytics — create/verificate';
 } catch (PDOException $e) {
     $errors[] = '❌ Schema migration: ' . $e->getMessage();
 }
