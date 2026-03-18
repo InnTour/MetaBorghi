@@ -446,9 +446,14 @@ seedRun($db, 'Ospitalità Masseria Santa Lucia', function(PDO $db) {
          rooms_count, max_guests, price_per_night_from, stars_or_category,
          check_in_time, check_out_time, min_stay_nights,
          amenities, accessibility, languages_spoken, cancellation_policy,
-         booking_email, booking_phone,
+         booking_email, booking_phone, booking_url,
+         main_video_url, virtual_tour_url,
+         contact_email, contact_phone, website_url,
+         social_instagram, social_facebook, social_linkedin,
+         certifications, founder_name, founder_quote,
+         tier, is_verified, b2b_open_for_contact, b2b_interests,
          is_active, is_featured)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         ON DUPLICATE KEY UPDATE
         name=VALUES(name), description_long=VALUES(description_long), updated_at=CURRENT_TIMESTAMP")
     ->execute([
@@ -466,6 +471,12 @@ seedRun($db, 'Ospitalità Masseria Santa Lucia', function(PDO $db) {
         'Italiano, English',
         'Cancellazione gratuita fino a 48 ore prima',
         'booking@caciocavalleriaded.it', '+39 0827 85012',
+        null,
+        null, null,
+        'info@caciocavalleriaded.it', '+39 0827 85012', 'https://www.caciocavalleriaded.it',
+        '#', '#', null,
+        'Agriturismo certificato', 'Paolo De Dominicis', 'Un luogo dove il tempo si ferma e la natura racconta.',
+        'PREMIUM', 1, 1, 'Gruppi turistici, Tour operator, Pacchetti esperienziali',
         1, 1,
     ]);
 }, $results, $errors);
@@ -481,12 +492,15 @@ seedRun($db, 'Ristorazione Trattoria del Borgo', function(PDO $db) {
          cuisine_type, price_range, seats_indoor, seats_outdoor,
          opening_hours, closing_day,
          specialties, menu_highlights,
-         contact_email, contact_phone,
-         social_instagram,
+         contact_email, contact_phone, website_url,
+         social_instagram, social_facebook, social_linkedin,
+         booking_url,
          accepts_groups, max_group_size,
          b2b_open_for_contact, b2b_interests,
+         certifications, founder_name, founder_quote,
+         tier, is_verified,
          is_active, is_featured)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         ON DUPLICATE KEY UPDATE
         name=VALUES(name), description_long=VALUES(description_long), updated_at=CURRENT_TIMESTAMP")
     ->execute([
@@ -502,9 +516,13 @@ seedRun($db, 'Ristorazione Trattoria del Borgo', function(PDO $db) {
         'Fusilli al ferretto con ragù di castrato, Caciocavallo Podolico alla piastra, Zuppa di legumi irpini, Dolci natalizi lacedoniesi',
         'Antipasto del pastore (salumi, formaggi, sottoli)|Fusilli al ragù di castrato|Agnello alla brace con patate|Torta di castagne',
         'info@trattoriadelborgo.it', '+39 0827 85100',
-        '@trattoriadelborgo',
+        null,
+        '@trattoriadelborgo', '#', null,
+        null,
         1, 30,
         1, 'Forniture locali, Gruppi turistici, Catering eventi',
+        'Cucina tipica irpina', 'Maria Rossi', 'La nostra cucina racconta la storia di questa terra.',
+        'BASE', 1,
         1, 1,
     ]);
 }, $results, $errors);
