@@ -1,0 +1,77 @@
+{
+  "metadata": {
+    "title": "MetaBorghi — Discover the Villages of Alta Irpinia",
+    "description": "Experiences, products and culture of the villages of inland Campania. 25 municipalities to discover."
+  },
+  "nav": {
+    "home": "Home",
+    "borghi": "Villages",
+    "esperienze": "Experiences",
+    "aziende": "Companies",
+    "artigianato": "Crafts",
+    "prodotti": "Products",
+    "contatti": "Contacts",
+    "accedi": "Sign In",
+    "registrati": "Sign Up"
+  },
+  "home": {
+    "hero": {
+      "title": "Discover Alta Irpinia",
+      "subtitle": "25 authentic villages, immersive experiences and local products",
+      "cta": "Explore villages"
+    },
+    "sections": {
+      "borghi": "Our villages",
+      "esperienze": "Featured experiences",
+      "prodotti": "Local products"
+    }
+  },
+  "borghi": {
+    "title": "Villages of Alta Irpinia",
+    "subtitle": "25 municipalities to discover through culture, nature and tradition",
+    "search": "Search a village...",
+    "population": "Population",
+    "altitude": "Altitude",
+    "area": "Area",
+    "companies": "{count, plural, =0 {No companies} =1 {# company} other {# companies}}",
+    "virtual_tour": "Virtual tour",
+    "discover": "Discover"
+  },
+  "esperienze": {
+    "title": "Experiences",
+    "subtitle": "Live Alta Irpinia through authentic experiences",
+    "duration": "Duration",
+    "minutes": "{count} min",
+    "price_from": "From €{price}",
+    "per_person": "per person",
+    "difficulty": {
+      "FACILE": "Easy",
+      "MEDIO": "Medium",
+      "DIFFICILE": "Hard"
+    },
+    "category": {
+      "GASTRONOMIA": "Gastronomy",
+      "CULTURA": "Culture",
+      "NATURA": "Nature",
+      "ARTIGIANATO": "Crafts",
+      "BENESSERE": "Wellness",
+      "AVVENTURA": "Adventure"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "back": "Back",
+    "see_all": "See all",
+    "no_results": "No results found",
+    "search": "Search",
+    "filters": "Filters"
+  },
+  "footer": {
+    "powered_by": "A platform by InnTour S.R.L.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "contacts": "Contacts"
+  }
+}

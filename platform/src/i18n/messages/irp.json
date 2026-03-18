@@ -1,0 +1,77 @@
+{
+  "metadata": {
+    "title": "MetaBorghi — Scòpre li Vurghi de l'Auta Irpinia",
+    "description": "Esperienze, prodotte e cultura de li vurghi de l'entroterra campane. 25 comune da scòprere."
+  },
+  "nav": {
+    "home": "Casa",
+    "borghi": "Vurghi",
+    "esperienze": "Esperienze",
+    "aziende": "Aziende",
+    "artigianato": "Artigianato",
+    "prodotti": "Prodotte",
+    "contatti": "Contatte",
+    "accedi": "Trase",
+    "registrati": "Registrate"
+  },
+  "home": {
+    "hero": {
+      "title": "Scòpre l'Auta Irpinia",
+      "subtitle": "25 vurghi autentece, esperienze e prodotte de la terra",
+      "cta": "Scòpre li vurghi"
+    },
+    "sections": {
+      "borghi": "Li vurghi nuostre",
+      "esperienze": "Esperienze 'n evidenza",
+      "prodotti": "Prodotte de la terra"
+    }
+  },
+  "borghi": {
+    "title": "Vurghi de l'Auta Irpinia",
+    "subtitle": "25 comune da scòprere tra cultura, natura e tradizione",
+    "search": "Cerca nu vurgo...",
+    "population": "Abitanti",
+    "altitude": "Altezza",
+    "area": "Superfice",
+    "companies": "{count, plural, =0 {Nessuna azienda} =1 {# azienda} other {# aziende}}",
+    "virtual_tour": "Tour virtuale",
+    "discover": "Scòpre"
+  },
+  "esperienze": {
+    "title": "Esperienze",
+    "subtitle": "Vive l'Auta Irpinia attraverso esperienze autentece",
+    "duration": "Durata",
+    "minutes": "{count} min",
+    "price_from": "Da €{price}",
+    "per_person": "a persona",
+    "difficulty": {
+      "FACILE": "Facele",
+      "MEDIO": "Medie",
+      "DIFFICILE": "Difficele"
+    },
+    "category": {
+      "GASTRONOMIA": "Gastronomia",
+      "CULTURA": "Cultura",
+      "NATURA": "Natura",
+      "ARTIGIANATO": "Artigianato",
+      "BENESSERE": "Benessere",
+      "AVVENTURA": "Avventura"
+    }
+  },
+  "common": {
+    "loading": "Sta careca...",
+    "error": "C'è stato nu problema",
+    "retry": "Riprova",
+    "back": "Arreto",
+    "see_all": "Vede tutte",
+    "no_results": "Niente trovate",
+    "search": "Cerca",
+    "filters": "Filtre"
+  },
+  "footer": {
+    "powered_by": "Na piattaforma de InnTour S.R.L.",
+    "privacy": "Privacy",
+    "terms": "Condizioni",
+    "contacts": "Contatte"
+  }
+}

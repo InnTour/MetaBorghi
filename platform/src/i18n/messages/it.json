@@ -1,0 +1,77 @@
+{
+  "metadata": {
+    "title": "MetaBorghi — Scopri i Borghi dell'Alta Irpinia",
+    "description": "Esperienze, prodotti e cultura dei borghi dell'entroterra campano. 25 comuni da scoprire."
+  },
+  "nav": {
+    "home": "Home",
+    "borghi": "Borghi",
+    "esperienze": "Esperienze",
+    "aziende": "Aziende",
+    "artigianato": "Artigianato",
+    "prodotti": "Prodotti",
+    "contatti": "Contatti",
+    "accedi": "Accedi",
+    "registrati": "Registrati"
+  },
+  "home": {
+    "hero": {
+      "title": "Scopri l'Alta Irpinia",
+      "subtitle": "25 borghi autentici, esperienze immersive e prodotti del territorio",
+      "cta": "Esplora i borghi"
+    },
+    "sections": {
+      "borghi": "I nostri borghi",
+      "esperienze": "Esperienze in evidenza",
+      "prodotti": "Prodotti del territorio"
+    }
+  },
+  "borghi": {
+    "title": "Borghi dell'Alta Irpinia",
+    "subtitle": "25 comuni da scoprire tra cultura, natura e tradizione",
+    "search": "Cerca un borgo...",
+    "population": "Abitanti",
+    "altitude": "Altitudine",
+    "area": "Superficie",
+    "companies": "{count, plural, =0 {Nessuna azienda} =1 {# azienda} other {# aziende}}",
+    "virtual_tour": "Tour virtuale",
+    "discover": "Scopri"
+  },
+  "esperienze": {
+    "title": "Esperienze",
+    "subtitle": "Vivi l'Alta Irpinia attraverso esperienze autentiche",
+    "duration": "Durata",
+    "minutes": "{count} min",
+    "price_from": "Da €{price}",
+    "per_person": "a persona",
+    "difficulty": {
+      "FACILE": "Facile",
+      "MEDIO": "Medio",
+      "DIFFICILE": "Difficile"
+    },
+    "category": {
+      "GASTRONOMIA": "Gastronomia",
+      "CULTURA": "Cultura",
+      "NATURA": "Natura",
+      "ARTIGIANATO": "Artigianato",
+      "BENESSERE": "Benessere",
+      "AVVENTURA": "Avventura"
+    }
+  },
+  "common": {
+    "loading": "Caricamento...",
+    "error": "Si è verificato un errore",
+    "retry": "Riprova",
+    "back": "Indietro",
+    "see_all": "Vedi tutti",
+    "no_results": "Nessun risultato trovato",
+    "search": "Cerca",
+    "filters": "Filtri"
+  },
+  "footer": {
+    "powered_by": "Una piattaforma InnTour S.R.L.",
+    "privacy": "Privacy",
+    "terms": "Termini",
+    "contacts": "Contatti"
+  }
+}

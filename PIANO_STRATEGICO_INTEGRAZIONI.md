@@ -1,6 +1,7 @@
-# MetaBorghi — Piano Strategico Integrazioni v1.0
+# MetaBorghi — Piano Strategico Integrazioni v1.1
 > InnTour S.R.L. | Data: 18 Marzo 2026 | Branch: `claude/metaborghi-strategic-plan-KHSDV`
 > Basato su: Blueprint v3 DEFINITIVO + Analisi stack corrente
+> **AGGIORNAMENTO v1.1**: Deployment su Hostinger Cloud (non Vercel)
 
 ---
 
@@ -11,6 +12,25 @@ Il progetto MetaBorghi dispone di una **base funzionante** (PHP 8+/MySQL/React-V
 ### Principio guida
 **Non buttare, costruire sopra.** Il sistema PHP attuale rimane in produzione e genera valore. La nuova architettura cresce parallelamente e assorbe il legacy per moduli successivi, con feature flag per il cutover controllato.
 
+### Decisione Deployment — Hostinger Cloud
+La piattaforma Next.js viene deployata su **Hostinger Cloud Hosting** (non Vercel), con il seguente stack:
+- **Runtime**: Node.js 20 LTS + PM2 (process manager)
+- **Reverse proxy**: nginx (SSL + static cache + gzip)
+- **Database**: MySQL esistente (shared hosting) → PostgreSQL in Fase V2 per pgvector/AI
+- **CI/CD**: GitHub Actions → SSH deploy su Cloud
+- **Legacy**: PHP su shared hosting resta attivo durante transizione (Strangler Fig)
+
+| Aspetto | Vercel (Blueprint originale) | Hostinger Cloud (Piano adattato) |
+|---|---|---|
+| Deploy | Automatico su git push | GitHub Actions → SSH + PM2 reload |
+| Edge Runtime | Nativo | Non disponibile — Node.js standard (sufficiente) |
+| Preview deploys | Automatico per PR | Staging manuale o subdomain deploy |
+| Image Optimization | CDN Vercel | `sharp` + nginx cache (equivalente) |
+| Scaling | Serverless auto | Risorse fisse piano Cloud (adeguato per 25 borghi) |
+| SSL | Automatico | Hostinger incluso / Let's Encrypt |
+| ISR | Edge cache globale | Node.js cache + nginx proxy_cache |
+| Costo | €0-20/mese | Incluso nel piano Cloud esistente |
+
 ---
 
 ## 1. Stato Attuale vs Target Architetturale
@@ -19,11 +39,11 @@ Il progetto MetaBorghi dispone di una **base funzionante** (PHP 8+/MySQL/React-V
 |-------|--------------|----------------------|-----|
 | **Frontend** | React (Vite) SPA, dati JS statici | Next.js 14 App Router + TypeScript + ShadCN | Alto |
 | **Backend** | PHP 8+ REST API + session admin | Next.js Server Actions + NestJS micro (Fase 3+) | Alto |
-| **Database** | MySQL 8.0 (Hostinger shared) | PostgreSQL (Neon serverless) + Drizzle ORM | Alto |
+| **Database** | MySQL 8.0 (Hostinger shared) | MySQL 8.0 + Drizzle ORM (→ PostgreSQL in V2 per pgvector) | Basso |
 | **CMS/Admin** | PHP server-rendered (Tailwind dark) | Payload CMS v3 (same-process Next.js) | Alto |
 | **Auth** | Bearer token API + Session PHP admin | NextAuth v5 + JWT RBAC 4 livelli | Alto |
 | **Mappe** | Leaflet.js | MapLibre GL JS + Protomaps PMTiles offline | Medio |
-| **Deploy** | Hostinger shared hosting | Vercel (frontend+CMS) + Railway (Medusa) | Alto |
+| **Deploy** | Hostinger shared hosting | Hostinger Cloud (Node.js + PM2 + nginx) | Medio |
 | **Dati** | Export strategy: DB → file JS statici | SSR/ISR + Payload CMS Local API | Alto |
 | **E-commerce** | Scheletro carrello (non operativo) | MedusaJS v2 + Mercur + Stripe Connect | Alto |
 | **AI/Tour** | Non presente | 3DVista + geoxp + Cicerone RAG + ElevenLabs | Assente |
