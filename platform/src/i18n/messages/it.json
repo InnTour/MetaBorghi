@@ -12,7 +12,9 @@
     "prodotti": "Prodotti",
     "contatti": "Contatti",
     "accedi": "Accedi",
-    "registrati": "Registrati"
+    "registrati": "Registrati",
+    "account": "Il mio profilo",
+    "logout": "Esci"
   },
   "home": {
     "hero": {
@@ -57,6 +59,110 @@
       "BENESSERE": "Benessere",
       "AVVENTURA": "Avventura"
     }
+  },
+  "auth": {
+    "fields": {
+      "name": "Nome completo",
+      "email": "Email",
+      "password": "Password",
+      "confirm_password": "Conferma password"
+    },
+    "login": {
+      "title": "Accedi a MetaBorghi",
+      "subtitle": "Entra per prenotare esperienze e gestire i tuoi preferiti",
+      "submit": "Accedi",
+      "loading": "Accesso in corso...",
+      "error": "Email o password non corretti",
+      "no_account": "Non hai un account?",
+      "register_link": "Registrati"
+    },
+    "register": {
+      "title": "Crea il tuo account",
+      "subtitle": "Registrati per scoprire e prenotare esperienze nei borghi dell'Alta Irpinia",
+      "submit": "Registrati",
+      "loading": "Registrazione in corso...",
+      "error": "Errore durante la registrazione",
+      "password_mismatch": "Le password non coincidono",
+      "has_account": "Hai già un account?",
+      "login_link": "Accedi"
+    }
+  },
+  "account": {
+    "roles": {
+      "guest": "Visitatore",
+      "registered": "Utente registrato",
+      "operator": "Operatore borgo",
+      "admin": "Amministratore"
+    },
+    "cards": {
+      "wishlist": "I miei preferiti",
+      "wishlist_desc": "Borghi, esperienze e prodotti che hai salvato",
+      "bookings": "Le mie prenotazioni",
+      "bookings_desc": "Consulta e gestisci le tue prenotazioni",
+      "reviews": "Le mie recensioni",
+      "reviews_desc": "Recensioni che hai scritto sulle esperienze",
+      "settings": "Impostazioni",
+      "settings_desc": "Modifica profilo, password e preferenze",
+      "analytics": "Statistiche",
+      "analytics_desc": "Dati su visite, prenotazioni e interazioni"
+    },
+    "operator": {
+      "assigned_borghi": "Borghi che gestisci",
+      "assigned_companies": "Aziende che gestisci",
+      "quick_actions": "Azioni rapide"
+    },
+    "permissions": {
+      "edit_content": "Modifica contenuti",
+      "manage_experiences": "Gestisci esperienze",
+      "manage_companies": "Gestisci aziende",
+      "view_analytics": "Vedi statistiche",
+      "edit_profile": "Modifica profilo",
+      "manage_products": "Gestisci prodotti",
+      "manage_orders": "Gestisci ordini"
+    },
+    "admin": {
+      "users": "Gestione utenti",
+      "users_desc": "Crea, modifica ruoli e assegna permessi",
+      "borghi": "Gestione borghi",
+      "borghi_desc": "Modifica contenuti di tutti i 25 borghi",
+      "companies": "Gestione aziende",
+      "companies_desc": "Gestisci profili e prodotti delle aziende",
+      "experiences": "Gestione esperienze",
+      "experiences_desc": "Crea e modifica esperienze per tutti i borghi",
+      "analytics": "Analytics globale",
+      "analytics_desc": "Dati aggregati su tutta la piattaforma",
+      "system": "Sistema",
+      "system_desc": "Configurazione piattaforma e integrazioni"
+    }
+  },
+  "admin_users": {
+    "title": "Gestione utenti",
+    "subtitle": "Visualizza, crea e gestisci gli utenti della piattaforma",
+    "roles": {
+      "guest": "Visitatore",
+      "registered": "Registrato",
+      "operator": "Operatore",
+      "admin": "Admin"
+    },
+    "stats": {
+      "total": "Totale utenti",
+      "registered": "Registrati",
+      "operators": "Operatori",
+      "admins": "Amministratori"
+    },
+    "table": {
+      "name": "Nome",
+      "email": "Email",
+      "role": "Ruolo",
+      "status": "Stato",
+      "registered": "Registrato il",
+      "last_login": "Ultimo accesso"
+    },
+    "status": {
+      "active": "Attivo",
+      "disabled": "Disattivato"
+    },
+    "empty": "Nessun utente trovato. Connetti il database per visualizzare gli utenti."
   },
   "common": {
     "loading": "Caricamento...",

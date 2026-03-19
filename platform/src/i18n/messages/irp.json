@@ -12,7 +12,9 @@
     "prodotti": "Prodotte",
     "contatti": "Contatte",
     "accedi": "Trase",
-    "registrati": "Registrate"
+    "registrati": "Registrate",
+    "account": "Lu profilo mio",
+    "logout": "Esse"
   },
   "home": {
     "hero": {
@@ -57,6 +59,110 @@
       "BENESSERE": "Benessere",
       "AVVENTURA": "Avventura"
     }
+  },
+  "auth": {
+    "fields": {
+      "name": "Nome e cognome",
+      "email": "Email",
+      "password": "Password",
+      "confirm_password": "Conferma password"
+    },
+    "login": {
+      "title": "Trase a MetaBorghi",
+      "subtitle": "Trase pe prenota' esperienze e gestire li preferite",
+      "submit": "Trase",
+      "loading": "Staje trasenno...",
+      "error": "Email o password sbagliata",
+      "no_account": "Nun tieni nu conto?",
+      "register_link": "Registrate"
+    },
+    "register": {
+      "title": "Crea lu conto tuo",
+      "subtitle": "Registrate pe scòprere e prenota' esperienze inta li vurghi",
+      "submit": "Registrate",
+      "loading": "Sta se registra...",
+      "error": "Errore durante la registrazione",
+      "password_mismatch": "Li password nun so' uguali",
+      "has_account": "Tieni già nu conto?",
+      "login_link": "Trase"
+    }
+  },
+  "account": {
+    "roles": {
+      "guest": "Visitatore",
+      "registered": "Utente registrate",
+      "operator": "Operatore de vurgo",
+      "admin": "Amministratore"
+    },
+    "cards": {
+      "wishlist": "Li preferite mie",
+      "wishlist_desc": "Vurghi, esperienze e prodotte che hai salvate",
+      "bookings": "Li prenotazioni mie",
+      "bookings_desc": "Vede e gestisce li prenotazioni",
+      "reviews": "Li recensioni mie",
+      "reviews_desc": "Recensioni che hai scritte",
+      "settings": "Impostazioni",
+      "settings_desc": "Modifica profilo, password e preferenze",
+      "analytics": "Statistiche",
+      "analytics_desc": "Date su visite, prenotazioni e interazioni"
+    },
+    "operator": {
+      "assigned_borghi": "Vurghi che gestisce",
+      "assigned_companies": "Aziende che gestisce",
+      "quick_actions": "Azioni rapide"
+    },
+    "permissions": {
+      "edit_content": "Modifica contenute",
+      "manage_experiences": "Gestisce esperienze",
+      "manage_companies": "Gestisce aziende",
+      "view_analytics": "Vede statistiche",
+      "edit_profile": "Modifica profilo",
+      "manage_products": "Gestisce prodotte",
+      "manage_orders": "Gestisce ordine"
+    },
+    "admin": {
+      "users": "Gestione utente",
+      "users_desc": "Crea, modifica ruole e assegna permesse",
+      "borghi": "Gestione vurghi",
+      "borghi_desc": "Modifica contenute de tutte li 25 vurghi",
+      "companies": "Gestione aziende",
+      "companies_desc": "Gestisce profili e prodotte de li aziende",
+      "experiences": "Gestione esperienze",
+      "experiences_desc": "Crea e modifica esperienze pe tutte li vurghi",
+      "analytics": "Analytics globale",
+      "analytics_desc": "Date aggregate su tutta la piattaforma",
+      "system": "Sistema",
+      "system_desc": "Configurazione piattaforma e integrazioni"
+    }
+  },
+  "admin_users": {
+    "title": "Gestione utente",
+    "subtitle": "Vede, crea e gestisce l'utente de la piattaforma",
+    "roles": {
+      "guest": "Visitatore",
+      "registered": "Registrate",
+      "operator": "Operatore",
+      "admin": "Admin"
+    },
+    "stats": {
+      "total": "Totale utente",
+      "registered": "Registrate",
+      "operators": "Operatore",
+      "admins": "Amministratore"
+    },
+    "table": {
+      "name": "Nome",
+      "email": "Email",
+      "role": "Ruolo",
+      "status": "Stato",
+      "registered": "Registrate lu",
+      "last_login": "Ultimo accesso"
+    },
+    "status": {
+      "active": "Attive",
+      "disabled": "Disattivate"
+    },
+    "empty": "Nessun utente trovate. Connetti lu database pe vede' l'utente."
   },
   "common": {
     "loading": "Sta careca...",
