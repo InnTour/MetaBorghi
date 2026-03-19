@@ -12,7 +12,9 @@
     "prodotti": "Products",
     "contatti": "Contacts",
     "accedi": "Sign In",
-    "registrati": "Sign Up"
+    "registrati": "Sign Up",
+    "account": "My Profile",
+    "logout": "Sign Out"
   },
   "home": {
     "hero": {
@@ -57,6 +59,110 @@
       "BENESSERE": "Wellness",
       "AVVENTURA": "Adventure"
     }
+  },
+  "auth": {
+    "fields": {
+      "name": "Full name",
+      "email": "Email",
+      "password": "Password",
+      "confirm_password": "Confirm password"
+    },
+    "login": {
+      "title": "Sign in to MetaBorghi",
+      "subtitle": "Sign in to book experiences and manage your favourites",
+      "submit": "Sign In",
+      "loading": "Signing in...",
+      "error": "Invalid email or password",
+      "no_account": "Don't have an account?",
+      "register_link": "Sign Up"
+    },
+    "register": {
+      "title": "Create your account",
+      "subtitle": "Register to discover and book experiences in the villages of Alta Irpinia",
+      "submit": "Sign Up",
+      "loading": "Creating account...",
+      "error": "Registration error",
+      "password_mismatch": "Passwords do not match",
+      "has_account": "Already have an account?",
+      "login_link": "Sign In"
+    }
+  },
+  "account": {
+    "roles": {
+      "guest": "Visitor",
+      "registered": "Registered user",
+      "operator": "Borough operator",
+      "admin": "Administrator"
+    },
+    "cards": {
+      "wishlist": "My favourites",
+      "wishlist_desc": "Villages, experiences and products you saved",
+      "bookings": "My bookings",
+      "bookings_desc": "View and manage your bookings",
+      "reviews": "My reviews",
+      "reviews_desc": "Reviews you wrote about experiences",
+      "settings": "Settings",
+      "settings_desc": "Edit profile, password and preferences",
+      "analytics": "Analytics",
+      "analytics_desc": "Data on visits, bookings and interactions"
+    },
+    "operator": {
+      "assigned_borghi": "Villages you manage",
+      "assigned_companies": "Companies you manage",
+      "quick_actions": "Quick actions"
+    },
+    "permissions": {
+      "edit_content": "Edit content",
+      "manage_experiences": "Manage experiences",
+      "manage_companies": "Manage companies",
+      "view_analytics": "View analytics",
+      "edit_profile": "Edit profile",
+      "manage_products": "Manage products",
+      "manage_orders": "Manage orders"
+    },
+    "admin": {
+      "users": "User management",
+      "users_desc": "Create, change roles and assign permissions",
+      "borghi": "Village management",
+      "borghi_desc": "Edit content for all 25 villages",
+      "companies": "Company management",
+      "companies_desc": "Manage company profiles and products",
+      "experiences": "Experience management",
+      "experiences_desc": "Create and edit experiences for all villages",
+      "analytics": "Global analytics",
+      "analytics_desc": "Aggregated data across the platform",
+      "system": "System",
+      "system_desc": "Platform configuration and integrations"
+    }
+  },
+  "admin_users": {
+    "title": "User management",
+    "subtitle": "View, create and manage platform users",
+    "roles": {
+      "guest": "Visitor",
+      "registered": "Registered",
+      "operator": "Operator",
+      "admin": "Admin"
+    },
+    "stats": {
+      "total": "Total users",
+      "registered": "Registered",
+      "operators": "Operators",
+      "admins": "Administrators"
+    },
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "registered": "Registered on",
+      "last_login": "Last login"
+    },
+    "status": {
+      "active": "Active",
+      "disabled": "Disabled"
+    },
+    "empty": "No users found. Connect the database to see users."
   },
   "common": {
     "loading": "Loading...",
